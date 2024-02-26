@@ -1,0 +1,30 @@
+.hero_title {
+    font-size: 6.5rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.25rem;
+    max-width: 50vw;
+    text-align: center;
+}
+.hero_desc {
+    margin-top: 1rem;
+}
+.btn_group {
+    margin: 3rem 0;
+}
+
+.btn_link {
+    margin-inline: 1.5rem;
+}
+.btn_icon {
+    margin-inline-start: 0.5rem;
+    transition: transform 0.3s ease-in-out;
+}
+
+.btn_link:hover .btn_icon{
+    transform: translateX(0.5rem);
+}
+
+.section_one {
+    margin-top: 7rem;
+}
