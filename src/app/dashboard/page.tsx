@@ -1,6 +1,7 @@
 import {LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import { fetchUserData, isNewUser } from "../utils/userUtils";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
+import OnboardingComponent  from "@/components/component/onboardingComponent";
 
 export default async function Page() {
     const { isAuthenticated } = getKindeServerSession();
@@ -12,14 +13,20 @@ export default async function Page() {
 
             <div>
                 {await isNewUser() ? (
-                    <div>Welcome to onboarding</div>
+                    <div>
+                        <div>Welcome to onboarding</div>
+                    </div>
                 ): (
                     <div>
                         <div>Welcome back {userData?.given_name}</div>
                         <pre>{ JSON.stringify(userData, null, 2)}</pre>
+
+                        
                     </div>
                 )}
             </div>
+
+            <OnboardingComponent />
             <LogoutLink>Log out</LogoutLink>
         </main>
     ) : (
