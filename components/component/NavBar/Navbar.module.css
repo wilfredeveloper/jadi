@@ -1,0 +1,43 @@
+.navbar {
+    position: relative;
+    /* background-color: antiquewhite; */
+}
+
+.navbar::after {
+    content: '';
+    position: absolute;
+    top: -2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 2rem;
+    background-color: #9747FF;
+    filter: blur(80px);
+    animation: color-change 5s infinite linear alternate;
+}
+
+@keyframes color-change {
+    0% {
+        background-color: #9747FF;
+    }
+    50% {
+        background-color: #E3A16A;
+    }
+    100% {
+        background-color: #FF5CAA;
+    }
+}
+
+.auth_button {
+    position: absolute;
+    right: 10%;
+}
+
+.btn_icon {
+    margin-inline-start: 0.5rem;
+    transition: transform 0.3s ease-in-out;
+}
+
+.auth_button:hover .btn_icon{
+    transform: translateX(0.35rem);
+}
