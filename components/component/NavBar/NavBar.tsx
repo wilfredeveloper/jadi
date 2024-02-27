@@ -25,12 +25,15 @@ export default function Component() {
           isdashboard ? "flex justify-center align-middle" : "flex-col"
         }`}
       >
+        <div>
         <Link
           className="flex h-10 text-slate-300 items-center justify-center text-2xl tracking-widest"
           href="#"
         >
           JADI
         </Link>
+        {isdashboard && <p className={`${styles.logo_tagline}`}>A note a day keeps the sup away</p>}
+        </div>
 
         {
           // 1️⃣ If its the dashboard, display the logout/login button

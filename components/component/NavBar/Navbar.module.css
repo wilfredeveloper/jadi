@@ -47,3 +47,8 @@
 .auth_button:hover .btn_icon{
     transform: translateX(0.35rem);
 }
+
+.logo_tagline {
+    font-size: small;
+    letter-spacing: 1px;
+}

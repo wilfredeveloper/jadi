@@ -33,24 +33,3 @@ export async function fetchUserId() {
         return undefined;
     }
 }
-
-/**
- * Fetches the user's profile picture.
- * @returns {Promise<string>} The URL of the user's profile picture or undefined if the user is not found.
- */
-export async function fetchUserImage() {
-    const user = await fetchUserData();
-
-    if (user) {
-        const { picture } = user;
-        return picture;
-    } else {
-        console.error("User not found. Can't fetch image");
-        return undefined;
-    }
-}
-
-/**
- * Checks if the user is new (i.e., has only signed in once).
- * @returns {Promise<boolean>} True if the user is new, false otherwise.
- */
