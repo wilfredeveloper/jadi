@@ -3,6 +3,7 @@ import { fetchUserData, fetchUserId } from "../utils/userUtils";
 import { DashLayout } from "@/components/component/dash-layout";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ErrorPageProtectedLayout } from "@/components/component/ProtectedLayout/error-page-protected-layout";
+import { DashLoader } from "@/components/component/dash-loader";
 
 export default async function Protected() {
   const { isAuthenticated } = getKindeServerSession();
@@ -29,7 +30,9 @@ export default async function Protected() {
             }}
           />
         ) : (
-          <div>Loading...</div> // Replace this with your preferred fallback UI
+          <div>
+            <DashLoader />
+          </div>
         )}
       </div>
     </main>

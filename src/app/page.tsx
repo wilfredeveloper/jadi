@@ -2,8 +2,13 @@ import Image from "next/image";
 import styles from "./homepage.module.css"
 import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import { Button } from "@/components/ui/button";
+import { db } from "@/src/db";
+import { users } from "../db/schema";
 
-export default function Home() {
+export default async function Home() {
+  const result = await db.select().from(users);
+
+
   return (
     <main className={`${styles.main_content}`}>
       <section className={`${styles.section_one} ${styles.section} flex flex-col items-center justify-center text-white`}>
@@ -25,6 +30,12 @@ export default function Home() {
           
         </div>
       </section>
+
+      {/* display the result in a centered div using JSON.stringify */}
+      <div className="flex justify-center">
+        <h1>User Data <br /></h1>
+        <pre>{JSON.stringify(result, null, 2)}</pre>
+      </div>
     </main>
   );
 }
