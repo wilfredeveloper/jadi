@@ -30,12 +30,6 @@ export default async function Home() {
           
         </div>
       </section>
-
-      {/* display the result in a centered div using JSON.stringify */}
-      <div className="flex justify-center">
-        <h1>User Data <br /></h1>
-        <pre>{JSON.stringify(result, null, 2)}</pre>
-      </div>
     </main>
   );
 }
