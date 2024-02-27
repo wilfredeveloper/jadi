@@ -12,7 +12,7 @@
     width: 50%;
     height: 2rem;
     background-color: #9747FF;
-    filter: blur(80px);
+    filter: blur(100px);
     animation: color-change 5s infinite linear alternate;
 }
 
@@ -20,8 +20,14 @@
     0% {
         background-color: #9747FF;
     }
+    25% {
+        background-color: #82e36a;
+    }
     50% {
         background-color: #E3A16A;
+    }
+    75% {
+        background-color: #f1c638;
     }
     100% {
         background-color: #FF5CAA;

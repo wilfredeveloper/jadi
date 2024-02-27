@@ -23,7 +23,7 @@ export function DashLayout({ userData }: DashLayoutProps) {
             alt="use profile photo"
             className="rounded-full object-cover"
             height="48"
-            src={userData.picture || "/avatar.png"}
+            src={userData.picture || "/placeholder-square.svg"}
             style={{
               aspectRatio: "48/48",
               objectFit: "cover",

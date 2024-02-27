@@ -54,15 +54,3 @@ export async function fetchUserImage() {
  * Checks if the user is new (i.e., has only signed in once).
  * @returns {Promise<boolean>} True if the user is new, false otherwise.
  */
-export async function isNewUser() {
-    const userId = await fetchUserId() || "";
-
-    const client = await createKindeManagementAPIClient();
-    const userData = await client.usersApi.getUserData({ id: userId });
-
-    if (userData.totalSignIns === 1) {
-        return true;
-    } else {
-        return false;
-    }
-}
