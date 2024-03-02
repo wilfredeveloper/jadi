@@ -6,6 +6,7 @@
 import { LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components"
 import { Button } from "@/components/ui/button";
 import styles from "./styles.module.css"
+import Link from "next/link";
 
 export function ErrorPageProtectedLayout() {
   return (
@@ -64,6 +65,15 @@ export function ErrorPageProtectedLayout() {
                   </Button>
         </RegisterLink>
       </div>
+      <Link href="/">
+      <Button variant="link" size={"sm"}>
+      <svg width="5" height="9" viewBox="0 0 5 9" className="me-3" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.122189 4.78942L4.28839 8.88012C4.3271 8.91813 4.37305 8.94827 4.42363 8.96884C4.4742 8.98941 4.52841 9 4.58315 9C4.63789 9 4.6921 8.98941 4.74267 8.96884C4.79325 8.94827 4.8392 8.91813 4.87791 8.88012C4.91662 8.84211 4.94732 8.79699 4.96827 8.74733C4.98922 8.69768 5 8.64445 5 8.5907C5 8.53695 4.98922 8.48373 4.96827 8.43407C4.94732 8.38441 4.91662 8.33929 4.87791 8.30128L1.00594 4.5L4.87791 0.698715C4.95608 0.621957 5 0.51785 5 0.409298C5 0.300745 4.95608 0.196639 4.87791 0.11988C4.79973 0.0431223 4.6937 8.08779e-10 4.58315 0C4.47259 -8.08779e-10 4.36656 0.0431223 4.28839 0.11988L0.122189 4.21058C0.0834528 4.24857 0.0527232 4.29369 0.031757 4.34335C0.0107909 4.39301 6.25167e-08 4.44624 6.25167e-08 4.5C6.25167e-08 4.55376 0.0107909 4.60699 0.031757 4.65665C0.0527232 4.70631 0.0834528 4.75143 0.122189 4.78942Z" fill="white"/>
+      </svg>
+
+      Back Home
+      </Button>
+      </Link>
     </div>
   )
 }
