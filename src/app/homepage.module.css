@@ -28,3 +28,23 @@
 .section_one {
     margin-top: 7rem;
 }
+
+.main_content {
+    padding-inline: 2rem
+}
+
+@media screen and (max-width: 768px) {
+    .hero_title {
+        font-size: 4.5rem;
+        max-width: 80vw;
+    }
+    .hero_desc {
+        margin-top: 0.5rem;
+    }
+    .btn_group {
+        margin: 2rem 0;
+    }
+    .btn_link {
+        margin-inline: 1rem;
+    }
+}

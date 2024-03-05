@@ -52,3 +52,18 @@
     font-size: small;
     letter-spacing: 1px;
 }
+
+@media screen and (max-width: 768px) {
+    .auth_button {
+        position:relative;
+        right: 0;
+    }
+    .navbar {
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+    .logo_tagline {
+        margin: 1rem 0;
+    }
+}

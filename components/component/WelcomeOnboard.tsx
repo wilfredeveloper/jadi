@@ -54,7 +54,7 @@ export function WelcomeOnboard({ userData, children }: WelcomeOnboardProps) {
       <div className="h-px bg-gray-200 dark:bg-gray-800 w-9/12 mx-auto" />
       <CardContent className="p-6">
         <div className="space-y-4">
-          <h2 className="text-lg font-bold">Welcome to the app {userData?.family_name?.toLocaleLowerCase()}</h2>
+          <h2 className="text-lg font-bold">Welcome to Jadi, {userData?.given_name?.toLocaleLowerCase()}</h2>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             We&apos;re excited to have you on board. If you have any questions, feel free to reach out to our support team.
           </p>

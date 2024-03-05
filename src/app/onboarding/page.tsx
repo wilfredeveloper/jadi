@@ -2,6 +2,7 @@ import OnboardingComponent from "@/components/OnboardingComponent/OnboardingComp
 import { fetchUserData } from "../utils/userUtils";
 import styles from "./page.module.css"
 import { SparklesCore } from "@/components/ui/sparkles";
+import Image from "next/Image"
 
 export default async function Page() {
   const userData = await fetchUserData();
@@ -18,6 +19,7 @@ export default async function Page() {
         className={`absolute h-screen top-0 left-0 w-screen ${styles.sparkles}`}
         particleColor={"#FFA65C"}
       />
+      <Image alt="bacground image of a tech like studio" src="/bg1.jpg" objectFit="cover" fill className={`${styles.bg}`}/>
     </main>
   ) : (
     <p className="text-white"> loading.. </p>
