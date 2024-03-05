@@ -10,7 +10,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 50%;
-    height: 2rem;
+    height: 3.25rem;
     background-color: #9747FF;
     filter: blur(100px);
     animation: color-change 5s infinite linear alternate;

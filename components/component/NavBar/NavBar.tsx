@@ -28,7 +28,7 @@ export default function Component() {
         <div>
         <Link
           className="flex h-10 text-slate-300 items-center justify-center text-2xl tracking-widest"
-          href="#"
+          href="/"
         >
           JADI
         </Link>
