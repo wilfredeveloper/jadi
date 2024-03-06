@@ -3,7 +3,7 @@
  * @see https://v0.dev/t/lxoQVts8vhT
  */
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CardTitle,
   CardDescription,
@@ -13,12 +13,15 @@ import {
   Card,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useFormState, useFormStatus } from "react-dom";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { WelcomeOnboard } from "../component/WelcomeOnboard";
 import styles from "./styles.module.css";
 import { Progress } from "../ui/progress";
 import { InterestsCard } from "../component/interests-card";
+import { SpinnerRoundFilled } from "spinners-react";
+import { createUser } from "@/src/app/actions/onboardingActions";
 
 interface UserData {
   family_name: string | null;
@@ -30,6 +33,10 @@ interface UserData {
 interface onboardingComponentProps {
   userData?: UserData;
 }
+
+const initialState = {
+  message: "",
+};
 
 export default function OnboardingComponent({
   userData,
@@ -43,8 +50,12 @@ export default function OnboardingComponent({
 
   const interests = [...new Set([...selectedInterests, ...inputInterests])];
 
+  const [formUserData, setFormUserData] = useState({});
 
-  const nextCard = () => {
+  const nextCard = (e: any) => {
+    e.preventDefault();
+
+    console.log("\n📜formUserData: ", formUserData, "\n");
     setCurrentCard((prevCard) => prevCard + 1);
   };
 
@@ -57,26 +68,36 @@ export default function OnboardingComponent({
     const sanitizedInterests: string[] = interests
       .map((interest) => interest.trim())
       .filter((interest) => interest !== "");
+    setFormUserData({
+        ...formUserData,
+        inputIntrests: sanitizedInterests,
+      });
     setInputInterests(sanitizedInterests);
-    console.log("input interests: ", sanitizedInterests);
   };
 
-  const handleInterestSelect = (interest: string) => {
-    const sanitizedInterest = interest.trim();
-    if (sanitizedInterest !== "") {
-      setSelectedInterests((prevInterests) => {
-        if (prevInterests.includes(sanitizedInterest)) {
-          // If the interest is already selected, remove it from the array
-          return prevInterests.filter((i) => i !== sanitizedInterest);
-        } else {
-          // If the interest is not selected, add it to the array
-          const newInterests = [...prevInterests, sanitizedInterest];
-          console.log("selected interests: ", newInterests);
-          return newInterests;
-        }
+const handleInterestSelect = (interest: string) => {
+  const sanitizedInterest = interest.trim();
+  if (sanitizedInterest !== "") {
+    setSelectedInterests((prevInterests) => {
+      let newInterests;
+      if (prevInterests.includes(sanitizedInterest)) {
+        // If the interest is already selected, remove it from the array
+        newInterests = prevInterests.filter((i) => i !== sanitizedInterest);
+      } else {
+        // If the interest is not selected, add it to the array
+        newInterests = [...prevInterests, sanitizedInterest];
+      }
+
+      // Update formUserData with the new interests
+      setFormUserData({
+        ...formUserData,
+        selectedInterests: newInterests,
       });
-    }
-  };
+
+      return newInterests;
+    });
+  }
+};
 
   const insitutions = [
     "University of Lagos",
@@ -91,27 +112,7 @@ export default function OnboardingComponent({
     visible: { opacity: 1 },
   };
 
-  const handleSubmit = async () => {
-    const firstName = userData?.given_name?.toLocaleLowerCase();
-    const lastName = userData?.family_name?.toLocaleLowerCase();
-    const email = userData?.email;
-    const kindeId = userData?.id;
-    const pfpURL = userData?.picture;
-
-
-    const body = JSON.stringify({
-      firstName,
-      lastName,
-      email,
-      kindeId,
-      pfpURL,
-      institution,
-      major,
-      interests,
-    })
-
-    console.log(body)
-  }
+  const [state, formAction] = useFormState(createUser, initialState);
 
   return (
     <div className={`${styles.wrapper}`}>
@@ -121,70 +122,19 @@ export default function OnboardingComponent({
         value={(currentCard / totalSteps) * 100}
       />
 
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        exit={"hidden"}
-        variants={variants}
-      >
-        {currentCard === 1 && (
-          <motion.div variants={variants}>
-            <WelcomeOnboard userData={userData}>
-              <Button size="sm" variant={"card"} onClick={nextCard}>
-                Start process
-                <svg
-                  width="5"
-                  height="9"
-                  viewBox="0 0 5 9"
-                  className="ms-3 transform rotate-180"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M0.122189 4.78942L4.28839 8.88012C4.3271 8.91813 4.37305 8.94827 4.42363 8.96884C4.4742 8.98941 4.52841 9 4.58315 9C4.63789 9 4.6921 8.98941 4.74267 8.96884C4.79325 8.94827 4.8392 8.91813 4.87791 8.88012C4.91662 8.84211 4.94732 8.79699 4.96827 8.74733C4.98922 8.69768 5 8.64445 5 8.5907C5 8.53695 4.98922 8.48373 4.96827 8.43407C4.94732 8.38441 4.91662 8.33929 4.87791 8.30128L1.00594 4.5L4.87791 0.698715C4.95608 0.621957 5 0.51785 5 0.409298C5 0.300745 4.95608 0.196639 4.87791 0.11988C4.79973 0.0431223 4.6937 8.08779e-10 4.58315 0C4.47259 -8.08779e-10 4.36656 0.0431223 4.28839 0.11988L0.122189 4.21058C0.0834528 4.24857 0.0527232 4.29369 0.031757 4.34335C0.0107909 4.39301 6.25167e-08 4.44624 6.25167e-08 4.5C6.25167e-08 4.55376 0.0107909 4.60699 0.031757 4.65665C0.0527232 4.70631 0.0834528 4.75143 0.122189 4.78942Z"
-                    fill="white"
-                  />
-                </svg>
-              </Button>
-            </WelcomeOnboard>
-          </motion.div>
-        )}
-      </motion.div>
-
-      {currentCard === 2 && (
+      <form action={formAction}>
         <motion.div
           initial="hidden"
           animate="visible"
           exit={"hidden"}
           variants={variants}
         >
-          <Card className="w-full max-w-md mx-auto">
-            <div className="flex flex-col h-full">
-              <CardHeader className="flex-shrink-0">
-                <CardTitle className="text-xl">Institution Details</CardTitle>
-                <CardDescription>
-                  Tell us which school you go to and your major
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col justify-center space-y-4">
-                <Input
-                  placeholder="Course Major"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setMajor(e.target.value)
-                  }
-                />
-                <Input
-                  placeholder="insitution"
-                  variant="dropdown"
-                  options={insitutions}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setInstitution(e.target.value)
-                  }
-                />
-              </CardContent>
-              <CardFooter className="mt-auto flex gap-4">
+          {currentCard === 1 && (
+            <motion.div variants={variants}>
+              <WelcomeOnboard userData={userData}>
+                <p role="status">{state?.message}</p>
                 <Button size="sm" variant={"card"} onClick={nextCard}>
-                  Next
+                  Start process
                   <svg
                     width="5"
                     height="9"
@@ -199,224 +149,315 @@ export default function OnboardingComponent({
                     />
                   </svg>
                 </Button>
-              </CardFooter>
-            </div>
-          </Card>
+              </WelcomeOnboard>
+            </motion.div>
+          )}
         </motion.div>
-      )}
 
-      {currentCard === 3 && (
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          exit={"hidden"}
-          variants={variants}
-        >
-          <InterestsCard>
-            <CardContent className="flex flex-col justify-center space-y-4 w-full max-w-sm">
-              <Input
-                placeholder="example: AI, ML"
-                onChange={handleInputChange}
-              />
-              <div className="flex flex-wrap gap-2 mt-4">
-                <Button
-                  size={"tagSize"}
-                  variant={"tag"}
-                  isSelected={selectedInterests.includes("AI & ML")}
-                  onClick={() => handleInterestSelect("AI & ML")}
-                >
-                  AI & ML
-                </Button>
-                <Button
-                  size={"tagSize"}
-                  variant={"tag"}
-                  isSelected={selectedInterests.includes("Javascript")}
-                  onClick={() => handleInterestSelect("Javascript")}
-                >
-                  Javascript
-                </Button>
-                <Button
-                  size={"tagSize"}
-                  variant={"tag"}
-                  isSelected={selectedInterests.includes("React")}
-                  onClick={() => handleInterestSelect("React")}
-                >
-                  React
-                </Button>
-                <Button
-                  size={"tagSize"}
-                  variant={"tag"}
-                  isSelected={selectedInterests.includes("Next.js")}
-                  onClick={() => handleInterestSelect("Next.js")}
-                >
-                  Next.js
-                </Button>
-                <Button
-                  size={"tagSize"}
-                  variant={"tag"}
-                  isSelected={selectedInterests.includes("Programming")}
-                  onClick={() => handleInterestSelect("Programming")}
-                >
-                  Programming
-                </Button>
-                <Button
-                  size={"tagSize"}
-                  variant={"tag"}
-                  isSelected={selectedInterests.includes("Computer Vision")}
-                  onClick={() => handleInterestSelect("Computer Vision")}
-                >
-                  Computer Vision
-                </Button>
+        {currentCard === 2 && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            exit={"hidden"}
+            variants={variants}
+          >
+            <Card className="w-full max-w-md mx-auto">
+              <div className="flex flex-col h-full">
+                <CardHeader className="flex-shrink-0">
+                  <CardTitle className="text-xl">Institution Details</CardTitle>
+                  <CardDescription>
+                    Tell us which school you go to and your major
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="flex flex-col justify-center space-y-4">
+                  <Input
+                    type="text"
+                    name="major"
+                    id="major"
+                    placeholder="Course Major"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setMajor(e.target.value);
+                      setFormUserData({
+                        ...formUserData,
+                        [e.target.name]: e.target.value,
+                      });
+                    }}
+                  />
+                  <Input
+                    name="institution"
+                    id="institution"
+                    placeholder="insitution"
+                    variant="dropdown"
+                    options={insitutions}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      setInstitution(e.target.value);
+                      setFormUserData({
+                        ...formUserData,
+                        [e.target.name]: e.target.value,
+                      });
+                    }}
+                  />
+                </CardContent>
+                <CardFooter className="mt-auto flex gap-4">
+                  <Button size="sm" variant={"card"} onClick={nextCard}>
+                    Next
+                    <svg
+                      width="5"
+                      height="9"
+                      viewBox="0 0 5 9"
+                      className="ms-3 transform rotate-180"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M0.122189 4.78942L4.28839 8.88012C4.3271 8.91813 4.37305 8.94827 4.42363 8.96884C4.4742 8.98941 4.52841 9 4.58315 9C4.63789 9 4.6921 8.98941 4.74267 8.96884C4.79325 8.94827 4.8392 8.91813 4.87791 8.88012C4.91662 8.84211 4.94732 8.79699 4.96827 8.74733C4.98922 8.69768 5 8.64445 5 8.5907C5 8.53695 4.98922 8.48373 4.96827 8.43407C4.94732 8.38441 4.91662 8.33929 4.87791 8.30128L1.00594 4.5L4.87791 0.698715C4.95608 0.621957 5 0.51785 5 0.409298C5 0.300745 4.95608 0.196639 4.87791 0.11988C4.79973 0.0431223 4.6937 8.08779e-10 4.58315 0C4.47259 -8.08779e-10 4.36656 0.0431223 4.28839 0.11988L0.122189 4.21058C0.0834528 4.24857 0.0527232 4.29369 0.031757 4.34335C0.0107909 4.39301 6.25167e-08 4.44624 6.25167e-08 4.5C6.25167e-08 4.55376 0.0107909 4.60699 0.031757 4.65665C0.0527232 4.70631 0.0834528 4.75143 0.122189 4.78942Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </Button>
+                  <SubmitButton />
+                </CardFooter>
               </div>
-            </CardContent>
-            <CardFooter className="mt-auto flex gap-4">
-              <Button size="sm" variant="card" onClick={prevCard}>
-                <svg
-                  width="5"
-                  height="9"
-                  viewBox="0 0 5 9"
-                  className="me-3"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M0.122189 4.78942L4.28839 8.88012C4.3271 8.91813 4.37305 8.94827 4.42363 8.96884C4.4742 8.98941 4.52841 9 4.58315 9C4.63789 9 4.6921 8.98941 4.74267 8.96884C4.79325 8.94827 4.8392 8.91813 4.87791 8.88012C4.91662 8.84211 4.94732 8.79699 4.96827 8.74733C4.98922 8.69768 5 8.64445 5 8.5907C5 8.53695 4.98922 8.48373 4.96827 8.43407C4.94732 8.38441 4.91662 8.33929 4.87791 8.30128L1.00594 4.5L4.87791 0.698715C4.95608 0.621957 5 0.51785 5 0.409298C5 0.300745 4.95608 0.196639 4.87791 0.11988C4.79973 0.0431223 4.6937 8.08779e-10 4.58315 0C4.47259 -8.08779e-10 4.36656 0.0431223 4.28839 0.11988L0.122189 4.21058C0.0834528 4.24857 0.0527232 4.29369 0.031757 4.34335C0.0107909 4.39301 6.25167e-08 4.44624 6.25167e-08 4.5C6.25167e-08 4.55376 0.0107909 4.60699 0.031757 4.65665C0.0527232 4.70631 0.0834528 4.75143 0.122189 4.78942Z"
-                    fill="white"
-                  />
-                </svg>
-                Correct something
-              </Button>
-              <Button size="sm" onClick={nextCard}>
-                Next
-                <svg
-                  width="5"
-                  height="9"
-                  viewBox="0 0 5 9"
-                  className="ms-3 transform rotate-180"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M0.122189 4.78942L4.28839 8.88012C4.3271 8.91813 4.37305 8.94827 4.42363 8.96884C4.4742 8.98941 4.52841 9 4.58315 9C4.63789 9 4.6921 8.98941 4.74267 8.96884C4.79325 8.94827 4.8392 8.91813 4.87791 8.88012C4.91662 8.84211 4.94732 8.79699 4.96827 8.74733C4.98922 8.69768 5 8.64445 5 8.5907C5 8.53695 4.98922 8.48373 4.96827 8.43407C4.94732 8.38441 4.91662 8.33929 4.87791 8.30128L1.00594 4.5L4.87791 0.698715C4.95608 0.621957 5 0.51785 5 0.409298C5 0.300745 4.95608 0.196639 4.87791 0.11988C4.79973 0.0431223 4.6937 8.08779e-10 4.58315 0C4.47259 -8.08779e-10 4.36656 0.0431223 4.28839 0.11988L0.122189 4.21058C0.0834528 4.24857 0.0527232 4.29369 0.031757 4.34335C0.0107909 4.39301 6.25167e-08 4.44624 6.25167e-08 4.5C6.25167e-08 4.55376 0.0107909 4.60699 0.031757 4.65665C0.0527232 4.70631 0.0834528 4.75143 0.122189 4.78942Z"
-                    fill="black"
-                  />
-                </svg>
-              </Button>
-            </CardFooter>
-          </InterestsCard>
-        </motion.div>
-      )}
+            </Card>
+          </motion.div>
+        )}
 
-      {currentCard === 4 && (
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          exit={"hidden"}
-          variants={variants}
-        >
-          <Card className="w-full max-w-md mx-auto">
-            <div className="flex flex-col h-full">
-              <CardHeader className="flex-shrink-0">
-                <CardTitle className="text-xl">Review your data</CardTitle>
-                <CardDescription>
-                  Make sure everything looks good before submitting.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col justify-center space-y-4">
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    {/* ... */}
-                    <div className="space-y-1.5">
-                      <label
-                        className="inline-block text-sm font-medium text-gray-500 dark:text-gray-400"
-                        htmlFor="review-institution"
-                      >
-                        First name
-                      </label>
-                      <p className="text-sm leading-none">
-                        {userData?.given_name?.toLocaleLowerCase()}
-                      </p>
-                      <UserIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label
-                        className="inline-block text-sm font-medium text-gray-500 dark:text-gray-400"
-                        htmlFor="review-institution"
-                      >
-                        Last name
-                      </label>
-                      <p className="text-sm leading-none">
-                        {userData?.family_name?.toLocaleLowerCase()}
-                      </p>
-                      <UserIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label
-                        className="inline-block text-sm font-medium text-gray-500 dark:text-gray-400"
-                        htmlFor="review-institution"
-                      >
-                        Institution
-                      </label>
-                      <p className="text-sm leading-none">{institution}</p>
-                      <SchoolIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label
-                        className="inline-block text-sm font-medium text-gray-500 dark:text-gray-400"
-                        htmlFor="review-major"
-                      >
-                        Major
-                      </label>
-                      <p className="text-sm leading-none">
-                        {major.toLocaleLowerCase()}
-                      </p>
-                      <GraduationCapIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                    </div>
-
-                    <div className="space-y-1.5 col-span-2">
-                      <label
-                        className="inline-block text-sm font-medium text-gray-500 dark:text-gray-400"
-                        htmlFor="review-major"
-                      >
-                        Email
-                      </label>
-                      <p className="text-sm leading-none">{userData?.email}</p>
-                      <MailIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                    </div>
-                    <div className="space-y-1.5 col-span-2">
-                      <label
-                        className="inline-block text-sm font-medium text-gray-500 dark:text-gray-400"
-                        htmlFor="review-major"
-                      >
-                        Interests
-                      </label>
-                      <p className="text-sm leading-6">
-                        {interests.join(", ")}
-                      </p>
-                      <HeartIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                    </div>
-                    {/* ... */}
-                  </div>
+        {currentCard === 3 && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            exit={"hidden"}
+            variants={variants}
+          >
+            <InterestsCard>
+              <CardContent className="flex flex-col justify-center space-y-4 w-full max-w-sm">
+                <Input
+                  name="inputInterests"
+                  placeholder="example: AI, ML"
+                  onChange={handleInputChange}
+                />
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <Button
+                    type="button"
+                    name="AI & ML"
+                    size={"tagSize"}
+                    variant={"tag"}
+                    isSelected={selectedInterests.includes("AI & ML")}
+                    onClick={() => handleInterestSelect("AI & ML")}
+                  >
+                    AI & ML
+                  </Button>
+                  <Button
+                    type="button"
+                    name="Javascript"
+                    size={"tagSize"}
+                    variant={"tag"}
+                    isSelected={selectedInterests.includes("Javascript")}
+                    onClick={() => handleInterestSelect("Javascript")}
+                  >
+                    Javascript
+                  </Button>
+                  <Button
+                    size={"tagSize"}
+                    type="button"
+                    name="React"
+                    variant={"tag"}
+                    isSelected={selectedInterests.includes("React")}
+                    onClick={() => handleInterestSelect("React")}
+                  >
+                    React
+                  </Button>
+                  <Button
+                    type="button"
+                    name="Next.js"
+                    size={"tagSize"}
+                    variant={"tag"}
+                    isSelected={selectedInterests.includes("Next.js")}
+                    onClick={() => handleInterestSelect("Next.js")}
+                  >
+                    Next.js
+                  </Button>
+                  <Button
+                    size={"tagSize"}
+                    variant={"tag"}
+                    type="button"
+                    name="Programming"
+                    isSelected={selectedInterests.includes("Programming")}
+                    onClick={() => handleInterestSelect("Programming")}
+                  >
+                    Programming
+                  </Button>
+                  <Button
+                    size={"tagSize"}
+                    variant={"tag"}
+                    type="button"
+                    name="Computer Vision"
+                    isSelected={selectedInterests.includes("Computer Vision")}
+                    onClick={() => handleInterestSelect("Computer Vision")}
+                  >
+                    Computer Vision
+                  </Button>
                 </div>
               </CardContent>
               <CardFooter className="mt-auto flex gap-4">
                 <Button size="sm" variant="card" onClick={prevCard}>
-                  {/* ... */}
+                  <svg
+                    width="5"
+                    height="9"
+                    viewBox="0 0 5 9"
+                    className="me-3"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0.122189 4.78942L4.28839 8.88012C4.3271 8.91813 4.37305 8.94827 4.42363 8.96884C4.4742 8.98941 4.52841 9 4.58315 9C4.63789 9 4.6921 8.98941 4.74267 8.96884C4.79325 8.94827 4.8392 8.91813 4.87791 8.88012C4.91662 8.84211 4.94732 8.79699 4.96827 8.74733C4.98922 8.69768 5 8.64445 5 8.5907C5 8.53695 4.98922 8.48373 4.96827 8.43407C4.94732 8.38441 4.91662 8.33929 4.87791 8.30128L1.00594 4.5L4.87791 0.698715C4.95608 0.621957 5 0.51785 5 0.409298C5 0.300745 4.95608 0.196639 4.87791 0.11988C4.79973 0.0431223 4.6937 8.08779e-10 4.58315 0C4.47259 -8.08779e-10 4.36656 0.0431223 4.28839 0.11988L0.122189 4.21058C0.0834528 4.24857 0.0527232 4.29369 0.031757 4.34335C0.0107909 4.39301 6.25167e-08 4.44624 6.25167e-08 4.5C6.25167e-08 4.55376 0.0107909 4.60699 0.031757 4.65665C0.0527232 4.70631 0.0834528 4.75143 0.122189 4.78942Z"
+                      fill="white"
+                    />
+                  </svg>
                   Correct something
                 </Button>
-                <Button size="sm" onClick={handleSubmit}>
-                  Submit
-                  {/* ... */}
+                <Button size="sm" onClick={nextCard}>
+                  Next
+                  <svg
+                    width="5"
+                    height="9"
+                    viewBox="0 0 5 9"
+                    className="ms-3 transform rotate-180"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0.122189 4.78942L4.28839 8.88012C4.3271 8.91813 4.37305 8.94827 4.42363 8.96884C4.4742 8.98941 4.52841 9 4.58315 9C4.63789 9 4.6921 8.98941 4.74267 8.96884C4.79325 8.94827 4.8392 8.91813 4.87791 8.88012C4.91662 8.84211 4.94732 8.79699 4.96827 8.74733C4.98922 8.69768 5 8.64445 5 8.5907C5 8.53695 4.98922 8.48373 4.96827 8.43407C4.94732 8.38441 4.91662 8.33929 4.87791 8.30128L1.00594 4.5L4.87791 0.698715C4.95608 0.621957 5 0.51785 5 0.409298C5 0.300745 4.95608 0.196639 4.87791 0.11988C4.79973 0.0431223 4.6937 8.08779e-10 4.58315 0C4.47259 -8.08779e-10 4.36656 0.0431223 4.28839 0.11988L0.122189 4.21058C0.0834528 4.24857 0.0527232 4.29369 0.031757 4.34335C0.0107909 4.39301 6.25167e-08 4.44624 6.25167e-08 4.5C6.25167e-08 4.55376 0.0107909 4.60699 0.031757 4.65665C0.0527232 4.70631 0.0834528 4.75143 0.122189 4.78942Z"
+                      fill="black"
+                    />
+                  </svg>
                 </Button>
               </CardFooter>
-            </div>
-          </Card>
-        </motion.div>
-      )}
+            </InterestsCard>
+          </motion.div>
+        )}
+
+        {currentCard === 4 && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            exit={"hidden"}
+            variants={variants}
+          >
+            <Card className="w-full max-w-md mx-auto">
+              <div className="flex flex-col h-full">
+                <CardHeader className="flex-shrink-0">
+                  <CardTitle className="text-xl">Review your data</CardTitle>
+                  <CardDescription>
+                    Make sure everything looks good before submitting.
+                  </CardDescription>
+                  <p>{state?.message}</p>
+                </CardHeader>
+                <CardContent className="flex flex-col justify-center space-y-4">
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      {/* ... */}
+                      <div className="space-y-1.5">
+                        <label
+                          className="inline-block text-sm font-medium text-gray-500 dark:text-gray-400"
+                          htmlFor="review-institution"
+                        >
+                          First name
+                        </label>
+                        <p className="text-sm leading-none">
+                          {userData?.given_name?.toLocaleLowerCase()}
+                        </p>
+                        <UserIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label
+                          className="inline-block text-sm font-medium text-gray-500 dark:text-gray-400"
+                          htmlFor="review-institution"
+                        >
+                          Last name
+                        </label>
+                        <p className="text-sm leading-none">
+                          {userData?.family_name?.toLocaleLowerCase()}
+                        </p>
+                        <UserIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label
+                          className="inline-block text-sm font-medium text-gray-500 dark:text-gray-400"
+                          htmlFor="review-institution"
+                        >
+                          Institution
+                        </label>
+                        <p className="text-sm leading-none">{institution}</p>
+                        <SchoolIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label
+                          className="inline-block text-sm font-medium text-gray-500 dark:text-gray-400"
+                          htmlFor="review-major"
+                        >
+                          Major
+                        </label>
+                        <p className="text-sm leading-none">
+                          {major.toLocaleLowerCase()}
+                        </p>
+                        <GraduationCapIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                      </div>
+
+                      <div className="space-y-1.5 col-span-2">
+                        <label
+                          className="inline-block text-sm font-medium text-gray-500 dark:text-gray-400"
+                          htmlFor="review-major"
+                        >
+                          Email
+                        </label>
+                        <p className="text-sm leading-none">
+                          {userData?.email}
+                        </p>
+                        <MailIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                      </div>
+                      <div className="space-y-1.5 col-span-2">
+                        <label
+                          className="inline-block text-sm font-medium text-gray-500 dark:text-gray-400"
+                          htmlFor="review-major"
+                        >
+                          Interests
+                        </label>
+                        <p className="text-sm leading-6">
+                          {interests.join(", ")}
+                        </p>
+                        <HeartIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                      </div>
+                      {/* ... */}
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="mt-auto flex gap-4 flex-wrap">
+                  <Button size="sm" variant="card" onClick={prevCard}>
+                    {/* ... */}
+                    Correct something
+                  </Button>
+                  <SubmitButton />
+                </CardFooter>
+              </div>
+            </Card>
+          </motion.div>
+        )}
+      </form>
     </div>
+  );
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button size="sm" variant={"card"} type="submit">
+      Data All good {pending ? <SpinnerRoundFilled size={35} /> : "👍"}
+    </Button>
   );
 }
 
