@@ -12,6 +12,7 @@ interface UserData {
   given_name: string | null;
   picture: string | null;
   email: string | null;
+  id: string | null;
 }
 
 interface WelcomeOnboardProps {
