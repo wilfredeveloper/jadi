@@ -12,6 +12,9 @@ export async function createUser(
   const email = formData.get('email')?.toString();
   const profilePhotoURL = formData.get('profilePhotoURL')?.toString();
   const kinde_ID = formData.get('kinde_ID')?.toString();
+  if (!kinde_ID) {
+    throw new Error('kinde_ID is required');
+  }
   const firstName = formData.get('firstName')?.toString();
   const lastName = formData.get('lastName')?.toString();
   const institution = formData.get('institution')?.toString();
@@ -26,13 +29,22 @@ export async function createUser(
     email,
     coursemajor: major,
     interests,
+    institution,
     profilePhotoURL,
   }
 
   console.log("\nCreating user with the following data:");
   console.log(userDataModel);
 
-  return { message: "User created" };
+  try {
+    db.insert(UserProfiles).values({
+      ...userDataModel,
+    }).execute();
+    return { message: "User created" };
+  } catch (error) {
+    console.error(error);
+    return { message: "Insertion to db failed" };
+  }
 }
 
 export async function createTodo(
