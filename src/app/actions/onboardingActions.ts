@@ -6,7 +6,11 @@ export async function createUser(
 ) {
 
   const major = formData.get('major')?.toString();
-  console.log("User Major >> ", major);
+  const email = formData.get('email')?.toString();
+  const institution = formData.get('institution')?.toString();
+
+  console.log("\nCreating user with the following data:");
+  console.log({ major, email, institution });
 
   return { message: "User created" };
 }
