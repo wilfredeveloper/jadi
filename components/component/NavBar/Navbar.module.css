@@ -53,6 +53,28 @@
     letter-spacing: 1px;
 }
 
+.link_with_avatar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ffffff1f;
+    background-color: rgba(212, 37, 247, 0.034);
+    backdrop-filter: blur(10px);
+    border-radius: 2rem;
+    max-width: fit-content;
+    margin-top: 1.25rem;
+    align-self: center;
+    transition: transform .25s ease, background-color .45s ease;
+}
+.link_with_avatar:hover {
+    background-color: rgba(212, 37, 247, 0.1);
+    transform: scale(1.05);
+}
+.user_name {
+    font-size: small;
+}
+
 @media screen and (max-width: 768px) {
     .auth_button {
         position:relative;

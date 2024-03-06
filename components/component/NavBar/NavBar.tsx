@@ -6,16 +6,19 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from 'react'
 import Link from "next/link";
 import styles from "./Navbar.module.css";
 import { Button } from "@/components/ui/button";
 import { LogoutLink, LoginLink } from "@kinde-oss/kinde-auth-nextjs";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { AvatarWithLink } from "@/components/ui/avatar-with-link";
+import { Avatar } from "@/components/ui/avatar";
+import Image from "next/image";
 
 export default function Component() {
   const pathname = usePathname();
-  const { isAuthenticated, isLoading } = useKindeBrowserClient();
-
+  const { isAuthenticated, getUser } = useKindeBrowserClient();
   const isdashboard = pathname === "/dashboard";
 
   return (
@@ -26,13 +29,17 @@ export default function Component() {
         }`}
       >
         <div>
-        <Link
-          className="flex h-10 text-slate-300 items-center justify-center text-2xl tracking-widest"
-          href="/"
-        >
-          JADI
-        </Link>
-        {isdashboard && <p className={`${styles.logo_tagline}`}>A note a day keeps the sup away</p>}
+          <Link
+            className="flex h-10 text-slate-300 items-center justify-center text-2xl tracking-widest"
+            href="/"
+          >
+            JADI
+          </Link>
+          {isdashboard && (
+            <p className={`${styles.logo_tagline}`}>
+              A note a day keeps the sup away
+            </p>
+          )}
         </div>
 
         {
@@ -89,7 +96,7 @@ export default function Component() {
           ) : (
             // 2️⃣ If its not the dashboard, display the nav links
             <div className="flex-1 flex flex-col justify-center mt-4">
-              <nav className="flex-1 grid w-full shrink-0">
+              <nav className="flex-1 w-full shrink-0 flex-col align-middle justify-center flex">
                 <div className="flex justify-center align-middle">
                   <Link
                     className="flex text-base h-10 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
@@ -149,6 +156,27 @@ export default function Component() {
                     </svg>
                   </Link>
                 </div>
+                { isAuthenticated ? <Link
+                  href={"/dashboard"}
+                  className={`${styles.link_with_avatar}`}
+                >
+                  <Avatar className="h-8 w-8">
+                    <Image
+                      alt="Avatar"
+                      height="40"
+                      src={"/placeholder-user.jpg"}
+                      style={{
+                        // aspectRatio: "15/15",
+                        objectFit: "cover",
+                      }}
+                      width="40"
+                    />
+                  </Avatar>
+
+                  <span className={`${styles.user_name} ms-4`}>
+                    Priscilla Kimama
+                  </span>
+                </Link> : ""}
               </nav>
             </div>
           )
