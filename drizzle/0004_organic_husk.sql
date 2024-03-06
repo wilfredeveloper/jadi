@@ -1,0 +1,1 @@
+ALTER TABLE "UserProfiles" RENAME COLUMN "bookmarked_notes" TO "Bookmarked_Notes";

@@ -16,5 +16,5 @@ export const UserProfiles = pgTable("UserProfiles", {
   coursemajor: text("Course_Major"),
   interests: text("Interests").array(),
   profilePhotoURL: text("Profile_Photo_URL"),
-  bookmarkedNotes: text("bookmarked_notes").array(),
+  bookmarkedNotes: text("Bookmarked_Notes").array(),
 });
