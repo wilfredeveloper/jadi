@@ -8,10 +8,10 @@ import { CardHeader, CardContent, Card } from "@/components/ui/card"
 
 interface DashLayoutProps {
   userData: {
-    family_name: string | null
-    given_name: string | null
-    picture: string | null
-    email: string | null}
+    family_name: string | null | undefined
+    given_name: string | null | undefined
+    picture: string | null | undefined
+    email: string | null | undefined}
 }
 
 export function DashLayout({ userData }: DashLayoutProps) {
