@@ -1,0 +1,15 @@
+.layout_wrapper {
+    height: calc(100vh - 15rem);
+}
+
+.btn_icon {
+    transition: transform 0.3s ease-in-out;
+}
+
+.auth_button:hover .btn_icon{
+    transform: translateX(0.35rem);
+}
+
+.text_content {
+    margin-top: 2rem;
+}

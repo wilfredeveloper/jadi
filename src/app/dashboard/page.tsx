@@ -1,41 +1,32 @@
-import {LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
-import { fetchUserData, isNewUser } from "../utils/userUtils";
-import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
+import {
+  fetchBasicUserData,
+  fetchComprehensiveUserData,
+} from "../utils/userUtils";
 import { DashLayout } from "@/components/component/dash-layout";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { ErrorPageProtectedLayout } from "@/components/component/ProtectedLayout/error-page-protected-layout";
 
+// 🛡️ This is a protected component, it will only render if the user is authenticated
 export default async function Page() {
-    const { isAuthenticated } = getKindeServerSession();
-    const userData = await fetchUserData();
-    console.log(userData);
+  // 🔐 Checking if the user is authenticated using Kinde server session
+  const { isAuthenticated } = getKindeServerSession();
 
-    return ( await isAuthenticated()) ? (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
+  // 📥 Fetching the user data
+  const userData = await fetchBasicUserData();
 
-            <div>
-                {await isNewUser() ? (
-                    <div>
-                        <div>Welcome to onboarding</div>
-                    </div>
-                ): (
-                    userData ? (
-                        <div>
-                            <DashLayout userData={{
-                                family_name: userData.family_name,
-                                given_name: userData.given_name,
-                                picture: userData.picture,
-                                email: userData.email
-                            
-                            }}/>
-                        </div>
-                    ) : (
-                        <div>Loading...</div> // Replace this with your preferred fallback UI
-                    )
-                )}
-            </div>
-        </main>
-    ) : (
-        <div>
-            This page is Protected <br />Please 👉 <LoginLink>Login</LoginLink> 👈 to view it
-        </div>
-    )
+  // 🎨 Rendering the main layout with user data
+  return (await isAuthenticated()) ? (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <DashLayout
+        userData={{
+          family_name: userData?.family_name,
+          given_name: userData?.given_name,
+          picture: userData?.picture,
+          email: userData?.email,
+        }}
+      />
+    </main>
+  ) : (
+    <ErrorPageProtectedLayout />
+  );
 }

@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1709066820818,
+      "tag": "0000_nasty_wallow",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1709072047953,
+      "tag": "0001_worthless_caretaker",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1709073173247,
+      "tag": "0002_premium_romulus",
+      "breakpoints": true
+    }
+  ]
+}

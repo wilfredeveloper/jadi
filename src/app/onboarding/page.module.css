@@ -1,0 +1,24 @@
+.main {
+    overflow-y: hidden;
+    padding-bottom: 2rem;
+    padding-inline: 2rem;
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+}
+.sparkles {
+    z-index: -1;
+}
+
+.bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    opacity: 0.2
+}

@@ -10,9 +10,9 @@
     left: 50%;
     transform: translateX(-50%);
     width: 50%;
-    height: 2rem;
+    height: 3.25rem;
     background-color: #9747FF;
-    filter: blur(80px);
+    filter: blur(100px);
     animation: color-change 5s infinite linear alternate;
 }
 
@@ -20,8 +20,14 @@
     0% {
         background-color: #9747FF;
     }
+    25% {
+        background-color: #82e36a;
+    }
     50% {
         background-color: #E3A16A;
+    }
+    75% {
+        background-color: #f1c638;
     }
     100% {
         background-color: #FF5CAA;
@@ -40,4 +46,24 @@
 
 .auth_button:hover .btn_icon{
     transform: translateX(0.35rem);
+}
+
+.logo_tagline {
+    font-size: small;
+    letter-spacing: 1px;
+}
+
+@media screen and (max-width: 768px) {
+    .auth_button {
+        position:relative;
+        right: 0;
+    }
+    .navbar {
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+    .logo_tagline {
+        margin: 1rem 0;
+    }
 }
