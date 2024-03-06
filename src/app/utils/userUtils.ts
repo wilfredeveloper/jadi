@@ -47,3 +47,7 @@ export async function fetchComprehensiveUserData() {
   const userData = await response.json();
   return userData;
 }
+
+export function isAuthenticated() {
+  return getKindeServerSession().isAuthenticated;
+}

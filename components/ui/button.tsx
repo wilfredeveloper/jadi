@@ -42,10 +42,11 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
   isSelected?: boolean
+  loading?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, isSelected = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, isSelected = false, loading = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
