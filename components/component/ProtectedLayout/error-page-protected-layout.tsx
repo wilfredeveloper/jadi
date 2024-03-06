@@ -42,7 +42,7 @@ export function ErrorPageProtectedLayout() {
                     </svg>
                   </Button>
         </LoginLink>
-        <RegisterLink className="ms-3">
+        <RegisterLink postLoginRedirectURL="/onboarding" className="ms-3">
                   <Button
                     className={`${styles.auth_button} bg-green-500 hover:bg-green-300`}
                     variant="default"
