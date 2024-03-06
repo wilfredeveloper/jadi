@@ -3,10 +3,10 @@ import styles from "./homepage.module.css"
 import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import { Button } from "@/components/ui/button";
 import { db } from "@/src/db";
-import { users } from "../db/schema";
+import { UserProfiles } from "../db/schema";
 
 export default async function Home() {
-  const result = await db.select().from(users);
+  const result = await db.select().from(UserProfiles);
 
 
   return (
@@ -29,6 +29,10 @@ export default async function Home() {
           </RegisterLink>
         </div>
       </section>
+
+      <pre>
+        {JSON.stringify(result, null, 2)}
+      </pre>
     </main>
   );
 }
