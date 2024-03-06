@@ -119,11 +119,11 @@ export default function OnboardingComponent({
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("given_name", userData?.given_name || "");
-    formData.append("family_name", userData?.family_name || "");
+    formData.append("firstName", userData?.given_name || "");
+    formData.append("lastName", userData?.family_name || "");
     formData.append("email", userData?.email || "");
-    formData.append("id", userData?.id || "");
-    formData.append("picture", userData?.picture || "");
+    formData.append("kinde_ID", userData?.id || "");
+    formData.append("profilePhotoURL", userData?.picture || "");
     formData.append("major", major);
     formData.append("institution", institution);
     formData.append("inputInterests", JSON.stringify(inputInterests));
