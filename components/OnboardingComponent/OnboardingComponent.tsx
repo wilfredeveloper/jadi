@@ -25,6 +25,7 @@ interface UserData {
   given_name: string | null;
   picture: string | null;
   email: string | null;
+  id: string | null;
 }
 interface onboardingComponentProps {
   userData?: UserData;
@@ -39,6 +40,9 @@ export default function OnboardingComponent({
   const [inputInterests, setInputInterests] = useState<string[]>([]);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [major, setMajor] = useState("");
+
+  const interests = [...new Set([...selectedInterests, ...inputInterests])];
+
 
   const nextCard = () => {
     setCurrentCard((prevCard) => prevCard + 1);
@@ -86,6 +90,28 @@ export default function OnboardingComponent({
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
   };
+
+  const handleSubmit = async () => {
+    const firstName = userData?.given_name?.toLocaleLowerCase();
+    const lastName = userData?.family_name?.toLocaleLowerCase();
+    const email = userData?.email;
+    const kindeId = userData?.id;
+    const pfpURL = userData?.picture;
+
+
+    const body = JSON.stringify({
+      firstName,
+      lastName,
+      email,
+      kindeId,
+      pfpURL,
+      institution,
+      major,
+      interests,
+    })
+
+    console.log(body)
+  }
 
   return (
     <div className={`${styles.wrapper}`}>
@@ -368,9 +394,7 @@ export default function OnboardingComponent({
                         Interests
                       </label>
                       <p className="text-sm leading-6">
-                        {selectedInterests.join(", ") +
-                          ", " +
-                          inputInterests.join(", ")}
+                        {interests.join(", ")}
                       </p>
                       <HeartIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
                     </div>
@@ -383,7 +407,7 @@ export default function OnboardingComponent({
                   {/* ... */}
                   Correct something
                 </Button>
-                <Button size="sm" onClick={nextCard}>
+                <Button size="sm" onClick={handleSubmit}>
                   Submit
                   {/* ... */}
                 </Button>
