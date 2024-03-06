@@ -1,4 +1,4 @@
-import { fetchComprehensiveUserData } from "../utils/userUtils";
+import { fetchBasicUserData, fetchComprehensiveUserData } from "../utils/userUtils";
 import { DashLayout } from "@/components/component/dash-layout";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ErrorPageProtectedLayout } from "@/components/component/ProtectedLayout/error-page-protected-layout";
@@ -11,21 +11,21 @@ export default async function Protected() {
   
 
   // 📥 Fetching the user data
-  const userData = await fetchComprehensiveUserData();
+  const userData = await fetchBasicUserData();
 
   // 🎨 Rendering the main layout with user data
-  return ( await isAuthenticated() ? (
+  return ( await isAuthenticated()) ? (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <DashLayout
         userData={{
-          family_name: userData.lastName,
-          given_name: userData.firstName,
-          picture: userData.picture,
-          email: userData.preferredEmail,
+          family_name: userData?.family_name,
+          given_name: userData?.given_name,
+          picture: userData?.picture,
+          email: userData?.email,
         }}
       />
     </main>
   ) : (
     <ErrorPageProtectedLayout />
-  ))
+  )
 }
