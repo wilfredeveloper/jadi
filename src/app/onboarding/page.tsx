@@ -2,7 +2,7 @@ import OnboardingComponent from "@/components/OnboardingComponent/OnboardingComp
 import { fetchBasicUserData } from "../utils/userUtils";
 import styles from "./page.module.css"
 import { SparklesCore } from "@/components/ui/sparkles";
-import Image from "next/Image"
+import Image from "next/image";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ErrorPageProtectedLayout } from "@/components/component/ProtectedLayout/error-page-protected-layout";
 
