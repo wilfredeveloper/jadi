@@ -23,6 +23,7 @@ import { InterestsCard } from "../component/interests-card";
 import { SpinnerRoundFilled } from "spinners-react";
 import { createUser } from "@/src/app/actions/onboardingActions";
 import { useToast } from "@/components/ui/use-toast";
+import { redirect } from 'next/navigation'
 
 interface UserData {
   family_name: string | null;
@@ -115,15 +116,9 @@ export default function OnboardingComponent({
 
   const [state, formAction] = useFormState(createUser, initialState);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
 
     const formData = new FormData();
-    formData.append("firstName", userData?.given_name || "");
-    formData.append("lastName", userData?.family_name || "");
-    formData.append("email", userData?.email || "");
-    formData.append("kinde_ID", userData?.id || "");
-    formData.append("profilePhotoURL", userData?.picture || "");
     formData.append("major", major);
     formData.append("institution", institution);
     formData.append("inputInterests", JSON.stringify(inputInterests));
@@ -140,7 +135,7 @@ export default function OnboardingComponent({
         value={(currentCard / totalSteps) * 100}
       />
 
-      <form action={formAction} onSubmit={handleSubmit}>
+      <form>
         <motion.div
           initial="hidden"
           animate="visible"
@@ -457,7 +452,7 @@ export default function OnboardingComponent({
                     {/* ... */}
                     Correct something
                   </Button>
-                  <SubmitButton />
+                  <SubmitButton onSubmit={handleSubmit} />
                 </CardFooter>
               </div>
             </Card>
@@ -468,20 +463,34 @@ export default function OnboardingComponent({
   );
 }
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
+interface SubmitButtonProps {
+  onSubmit: () => Promise<void>;
+}
+
+
+function SubmitButton({ onSubmit }: SubmitButtonProps) {
+  const [ pending, setPending ] = useState(false);
   const { toast } = useToast();
+
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setPending(true);
+    await onSubmit();
+    setPending(false);
+    toast({
+      title: "🎉 Warming up the notes",
+      description: "You'll be redirected to the dashboard in a jiffy buddy",
+    });
+    // redirect("/dashboard");
+  }
 
   return (
     <Button
       size="sm"
       variant={"card"}
       type="submit"
-      onClick={() => {
-        toast({
-          title: "🎉 Warming up the notes",
-          description: "You'll be redirected to the dashboard in a jiffy buddy",
-        });
+      onClick={(e) => {
+        handleClick(e);
       }}
     >
       Data All good {pending ? <SpinnerRoundFilled size={35} /> : "👍"}
