@@ -1,0 +1,119 @@
+{
+  "id": "0a9a2417-90c0-4bd4-abc0-0fc77bb74083",
+  "prevId": "4dc8fee8-07f8-425c-9440-6a33f3883e35",
+  "version": "5",
+  "dialect": "pg",
+  "tables": {
+    "UserProfiles": {
+      "name": "UserProfiles",
+      "schema": "",
+      "columns": {
+        "Kinde_ID": {
+          "name": "Kinde_ID",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "First_Name": {
+          "name": "First_Name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Last_Name": {
+          "name": "Last_Name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Email": {
+          "name": "Email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Institution": {
+          "name": "Institution",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Course_Major": {
+          "name": "Course_Major",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Interests": {
+          "name": "Interests",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Profile_Photo_URL": {
+          "name": "Profile_Photo_URL",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Bookmarked_Notes": {
+          "name": "Bookmarked_Notes",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "full_name": {
+          "name": "full_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phone": {
+          "name": "phone",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "address": {
+          "name": "address",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bookmarked_notes": {
+          "name": "bookmarked_notes",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
