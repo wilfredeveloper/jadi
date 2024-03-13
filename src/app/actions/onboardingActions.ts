@@ -1,6 +1,7 @@
 "use server";
 import { db } from "@/src/db"
 import { UserProfiles } from "@/src/db/schema"
+import { fetchBasicUserData } from "../utils/userUtils";
 
 
 export async function createUser(
@@ -8,15 +9,19 @@ export async function createUser(
   formData: FormData
 ) {
 
-  const major = formData.get('major')?.toString();
-  const email = formData.get('email')?.toString();
-  const profilePhotoURL = formData.get('profilePhotoURL')?.toString();
-  const kinde_ID = formData.get('kinde_ID')?.toString();
-  if (!kinde_ID) {
-    throw new Error('kinde_ID is required');
+  const userData = await fetchBasicUserData();
+
+  if (!userData) {
+    throw new Error('userData is undefined');
   }
-  const firstName = formData.get('firstName')?.toString();
-  const lastName = formData.get('lastName')?.toString();
+
+  const email = userData.email;
+  const profilePhotoURL = userData.picture;
+  const kinde_ID = userData.id;
+  const firstName = userData.given_name;
+  const lastName = userData.family_name;
+
+  const major = formData.get('major')?.toString();
   const institution = formData.get('institution')?.toString();
   const inputInterests = formData.getAll('inputInterests').map((interest) => JSON.parse(interest.toString()));
   const selectedInterests = formData.getAll('selectedInterests').map((interest) => JSON.parse(interest.toString()));
@@ -37,7 +42,7 @@ export async function createUser(
   console.log(userDataModel);
 
   try {
-    db.insert(UserProfiles).values({
+    await db.insert(UserProfiles).values({
       ...userDataModel,
     }).execute();
     return { message: "User created" };

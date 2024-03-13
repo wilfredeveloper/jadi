@@ -23,7 +23,7 @@ import { InterestsCard } from "../component/interests-card";
 import { SpinnerRoundFilled } from "spinners-react";
 import { createUser } from "@/src/app/actions/onboardingActions";
 import { useToast } from "@/components/ui/use-toast";
-import { redirect } from 'next/navigation'
+import { useRouter } from "next/navigation"
 
 interface UserData {
   family_name: string | null;
@@ -43,6 +43,9 @@ const initialState = {
 export default function OnboardingComponent({
   userData,
 }: onboardingComponentProps) {
+
+  const router = useRouter();
+
   const totalSteps = 4;
   const [currentCard, setCurrentCard] = useState(1);
   const [institution, setInstitution] = useState("");
@@ -123,8 +126,10 @@ export default function OnboardingComponent({
     formData.append("institution", institution);
     formData.append("inputInterests", JSON.stringify(inputInterests));
     formData.append("selectedInterests", JSON.stringify(selectedInterests));
-
+    
     await createUser(state, formData);
+    router.push("/dashboard");
+
   };
 
   return (
@@ -481,7 +486,6 @@ function SubmitButton({ onSubmit }: SubmitButtonProps) {
       title: "🎉 Warming up the notes",
       description: "You'll be redirected to the dashboard in a jiffy buddy",
     });
-    // redirect("/dashboard");
   }
 
   return (
