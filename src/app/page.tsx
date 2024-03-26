@@ -3,17 +3,17 @@ import styles from "./homepage.module.css"
 import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import { Button } from "@/components/ui/button";
 import { db } from "@/src/db";
-import { users } from "../db/schema";
+import { UserProfiles } from "../db/schema";
 
 export default async function Home() {
-  const result = await db.select().from(users);
+  const result = await db.select().from(UserProfiles);
 
 
   return (
     <main className={`${styles.main_content}`}>
       <section className={`${styles.section_one} ${styles.section} flex flex-col items-center justify-center text-white`}>
         <h1 className={`${styles.hero_title}`}>Ditch the Scattered notes </h1>
-        <p className={`${styles.hero_desc}`}>Stop wasting time searching for lost notes and start studying smarter with Jadi!</p>
+        <p className={`${styles.hero_desc}`}>Stop wasting time searching for notes and start studying smarter with Jadi</p>
 
         <div className={`flex align-middle justify-evenly ${styles.btn_group}`}>
           <LoginLink className={`${styles.btn_link}`}>

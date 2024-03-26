@@ -22,6 +22,8 @@ import { Progress } from "../ui/progress";
 import { InterestsCard } from "../component/interests-card";
 import { SpinnerRoundFilled } from "spinners-react";
 import { createUser } from "@/src/app/actions/onboardingActions";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation"
 
 interface UserData {
   family_name: string | null;
@@ -41,6 +43,9 @@ const initialState = {
 export default function OnboardingComponent({
   userData,
 }: onboardingComponentProps) {
+
+  const router = useRouter();
+
   const totalSteps = 4;
   const [currentCard, setCurrentCard] = useState(1);
   const [institution, setInstitution] = useState("");
@@ -69,35 +74,35 @@ export default function OnboardingComponent({
       .map((interest) => interest.trim())
       .filter((interest) => interest !== "");
     setFormUserData({
-        ...formUserData,
-        inputIntrests: sanitizedInterests,
-      });
+      ...formUserData,
+      inputIntrests: sanitizedInterests,
+    });
     setInputInterests(sanitizedInterests);
   };
 
-const handleInterestSelect = (interest: string) => {
-  const sanitizedInterest = interest.trim();
-  if (sanitizedInterest !== "") {
-    setSelectedInterests((prevInterests) => {
-      let newInterests;
-      if (prevInterests.includes(sanitizedInterest)) {
-        // If the interest is already selected, remove it from the array
-        newInterests = prevInterests.filter((i) => i !== sanitizedInterest);
-      } else {
-        // If the interest is not selected, add it to the array
-        newInterests = [...prevInterests, sanitizedInterest];
-      }
+  const handleInterestSelect = (interest: string) => {
+    const sanitizedInterest = interest.trim();
+    if (sanitizedInterest !== "") {
+      setSelectedInterests((prevInterests) => {
+        let newInterests;
+        if (prevInterests.includes(sanitizedInterest)) {
+          // If the interest is already selected, remove it from the array
+          newInterests = prevInterests.filter((i) => i !== sanitizedInterest);
+        } else {
+          // If the interest is not selected, add it to the array
+          newInterests = [...prevInterests, sanitizedInterest];
+        }
 
-      // Update formUserData with the new interests
-      setFormUserData({
-        ...formUserData,
-        selectedInterests: newInterests,
+        // Update formUserData with the new interests
+        setFormUserData({
+          ...formUserData,
+          selectedInterests: newInterests,
+        });
+
+        return newInterests;
       });
-
-      return newInterests;
-    });
-  }
-};
+    }
+  };
 
   const insitutions = [
     "University of Lagos",
@@ -112,24 +117,19 @@ const handleInterestSelect = (interest: string) => {
     visible: { opacity: 1 },
   };
 
-  
   const [state, formAction] = useFormState(createUser, initialState);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  
+  const handleSubmit = async () => {
+
     const formData = new FormData();
-    formData.append('given_name', userData?.given_name || "")
-    formData.append('family_name', userData?.family_name || "")
-    formData.append('email', userData?.email || "")
-    formData.append('id', userData?.id || "")
-    formData.append('picture', userData?.picture || "")
-    formData.append('major', major);
-    formData.append('institution', institution);
-    formData.append('inputInterests', JSON.stringify(inputInterests));
-    formData.append('selectedInterests', JSON.stringify(selectedInterests));
-  
+    formData.append("major", major);
+    formData.append("institution", institution);
+    formData.append("inputInterests", JSON.stringify(inputInterests));
+    formData.append("selectedInterests", JSON.stringify(selectedInterests));
+    
     await createUser(state, formData);
+    router.push("/dashboard");
+
   };
 
   return (
@@ -140,7 +140,7 @@ const handleInterestSelect = (interest: string) => {
         value={(currentCard / totalSteps) * 100}
       />
 
-      <form action={formAction} onSubmit={handleSubmit}>
+      <form>
         <motion.div
           initial="hidden"
           animate="visible"
@@ -233,7 +233,6 @@ const handleInterestSelect = (interest: string) => {
                       />
                     </svg>
                   </Button>
-                  <SubmitButton />
                 </CardFooter>
               </div>
             </Card>
@@ -458,7 +457,7 @@ const handleInterestSelect = (interest: string) => {
                     {/* ... */}
                     Correct something
                   </Button>
-                  <SubmitButton />
+                  <SubmitButton onSubmit={handleSubmit} />
                 </CardFooter>
               </div>
             </Card>
@@ -469,11 +468,35 @@ const handleInterestSelect = (interest: string) => {
   );
 }
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
+interface SubmitButtonProps {
+  onSubmit: () => Promise<void>;
+}
+
+
+function SubmitButton({ onSubmit }: SubmitButtonProps) {
+  const [ pending, setPending ] = useState(false);
+  const { toast } = useToast();
+
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setPending(true);
+    await onSubmit();
+    setPending(false);
+    toast({
+      title: "🎉 Warming up the notes",
+      description: "You'll be redirected to the dashboard in a jiffy buddy",
+    });
+  }
 
   return (
-    <Button size="sm" variant={"card"} type="submit">
+    <Button
+      size="sm"
+      variant={"card"}
+      type="submit"
+      onClick={(e) => {
+        handleClick(e);
+      }}
+    >
       Data All good {pending ? <SpinnerRoundFilled size={35} /> : "👍"}
     </Button>
   );

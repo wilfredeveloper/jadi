@@ -5,6 +5,7 @@ import { SparklesCore } from "@/components/ui/sparkles";
 import Image from "next/image";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ErrorPageProtectedLayout } from "@/components/component/ProtectedLayout/error-page-protected-layout";
+import { Toaster } from "@/components/ui/toaster";
 
 export default async function Page() {
   const userData = await fetchBasicUserData();
@@ -26,6 +27,7 @@ export default async function Page() {
         particleColor={"#FFA65C"}
       /> */}
       <Image alt="bacground image of a tech like studio" src="/bg1.jpg" objectFit="cover" fill className={`${styles.bg}`}/>
+      <Toaster />
     </main>
   ) : (
     <p className="text-white"> loading.. </p>
