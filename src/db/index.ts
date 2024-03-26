@@ -1,5 +1,5 @@
 import { Client } from "pg"
-import { createPool } from "@vercel/postgres"
+import { createClient } from "@vercel/postgres"
 import "dotenv/config"
 import { drizzle } from "drizzle-orm/node-postgres";
 
@@ -13,12 +13,13 @@ const config = {
     database: process.env.VERCEL_POSTGRES_DATABASE,
 };
 
-const connectionString = `postgres://${config.user}:${config.password}@${config.host}:${config.port}/${config.database}?schema=public`
+// const connectionString = `postgres://${config.user}:${config.password}@${config.host}:${config.port}/${config.database}?schema=public`
+const connectionString = `${process.env.VERCEL_POSTGRES_URL_NON_POOLING}`
 
 // const client = new Client({
 //     connectionString
 // })
-const client = createPool({
+const client = createClient({
     connectionString
 })
 
