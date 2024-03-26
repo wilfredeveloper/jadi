@@ -12,6 +12,7 @@ export const UserProfiles = pgTable("UserProfiles", {
   kindeID: text("Kinde_ID").primaryKey(),
   firstName: text("First_Name"),
   lastName: text("Last_Name"),
+  userName: text("User_Name"),
   email: text("Email"),
   institution: text("Institution"),
   coursemajor: text("Course_Major"),

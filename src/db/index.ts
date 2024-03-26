@@ -1,20 +1,24 @@
 import { Client } from "pg"
+import { createPool } from "@vercel/postgres"
 import "dotenv/config"
 import { drizzle } from "drizzle-orm/node-postgres";
 
 import * as schema from "./schema"
 
 const config = {
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    host: process.env.POSTGRES_HOST,
+    user: process.env.VERCEL_POSTGRES_USER,
+    password: process.env.VERCEL_POSTGRES_PASSWORD,
+    host: process.env.VERCEL_POSTGRES_HOST,
     port: process.env.POSTGRES_PORT,
-    database: process.env.POSTGRES_DATABASE_NAME,
+    database: process.env.VERCEL_POSTGRES_DATABASE,
 };
 
 const connectionString = `postgres://${config.user}:${config.password}@${config.host}:${config.port}/${config.database}?schema=public`
 
-const client = new Client({
+// const client = new Client({
+//     connectionString
+// })
+const client = createPool({
     connectionString
 })
 

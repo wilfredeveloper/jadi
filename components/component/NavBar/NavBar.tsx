@@ -10,28 +10,47 @@ import Link from "next/link";
 import Logo from "@/components/ui/logo";
 import NavLinks from "@/components/ui/nav-links";
 import styles from "./Navbar.module.css";
+import { Avatar } from "@/components/ui/avatar";
+import Image from "next/image";
 
 export default function Component() {
   const pathname = usePathname();
   const isdashboard = pathname === "/dashboard";
+  const isNotesSearchRoute = pathname === "/notes-search";
 
   return (
     <>
       <div
-        className={`${styles.navbar} py-14 ${
-          isdashboard ? "flex justify-center align-middle" : "flex-col"
+        className={`${styles.navbar} ${
+          isdashboard || isNotesSearchRoute
+            ? `${styles.personalised_nav}`
+            : "flex justify-center align-middle flex-col"
         }`}
-      >
-        <div>
-          <Logo />
-          {isdashboard ? (
-            <p className={`${styles.logo_tagline}`}>
-              A note a day keeps the sup away
-            </p>
-          ) : (
-            <NavLinks />
-          )}
-        </div>
+        >
+        {isdashboard || isNotesSearchRoute ? <p>A note a day keeps the sup away</p> : ""}
+
+        <Logo className={`${styles.logo}`} width="52" height="72"/>
+
+        {isdashboard || isNotesSearchRoute ? (
+          <Link className={`${styles.glass_link}`} href={"/dashboard"}>
+            dashboard
+            <Avatar className="ms-3 w-8 h-8">
+              <Image
+                alt="use profile photo"
+                className="rounded-full object-cover"
+                height="42"
+                src={"/placeholder-user.svg"}
+                style={{
+                  aspectRatio: "42/42",
+                  objectFit: "cover",
+                }}
+                width="48"
+              />
+            </Avatar>
+          </Link>
+        ) : (
+          <NavLinks />
+        )}
       </div>
     </>
   );

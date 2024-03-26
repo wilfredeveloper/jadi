@@ -13,7 +13,7 @@ export default async function Home() {
     <main className={`${styles.main_content}`}>
       <section className={`${styles.section_one} ${styles.section} flex flex-col items-center justify-center text-white`}>
         <h1 className={`${styles.hero_title}`}>Ditch the Scattered notes </h1>
-        <p className={`${styles.hero_desc}`}>Stop wasting time searching for lost notes and start studying smarter with Jadi!</p>
+        <p className={`${styles.hero_desc}`}>Stop wasting time searching for notes and start studying smarter with Jadi</p>
 
         <div className={`flex align-middle justify-evenly ${styles.btn_group}`}>
           <LoginLink className={`${styles.btn_link}`}>
@@ -29,10 +29,6 @@ export default async function Home() {
           </RegisterLink>
         </div>
       </section>
-
-      <pre>
-        {JSON.stringify(result, null, 2)}
-      </pre>
     </main>
   );
 }

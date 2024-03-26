@@ -1,6 +1,8 @@
 .navbar {
-    position: relative;
-    /* background-color: antiquewhite; */
+    border-bottom: 1px solid #ffffff15;
+    background-color: rgba(255, 255, 255, 0.048);
+    backdrop-filter: blur(10px);
+    padding: 2rem 0;
 }
 
 .navbar::after {
@@ -9,11 +11,11 @@
     top: -2.5rem;
     left: 50%;
     transform: translateX(-50%);
-    width: 50%;
+    width: 60%;
     height: 3.25rem;
     background-color: #9747FF;
-    filter: blur(100px);
-    animation: color-change 5s infinite linear alternate;
+    filter: blur(120px);
+    /* animation: color-change 10s infinite linear alternate; */
 }
 
 @keyframes color-change {
@@ -50,6 +52,7 @@
 
 .logo_tagline {
     font-size: small;
+    align-self: center;
     letter-spacing: 1px;
 }
 
@@ -73,6 +76,27 @@
 }
 .user_name {
     font-size: small;
+}
+
+.glass_link {
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.03);
+    /* width: fit-content; */
+    padding: .5rem .95rem;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 2rem;
+}
+
+.personalised_nav {
+    padding-inline: 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo {
+    align-self: center;
+    margin-bottom: 1rem;
 }
 
 @media screen and (max-width: 768px) {
