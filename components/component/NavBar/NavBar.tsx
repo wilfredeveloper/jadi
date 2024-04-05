@@ -24,12 +24,15 @@ export default function Component() {
         className={`${styles.navbar} ${
           isdashboard || isNotesSearchRoute
             ? `${styles.personalised_nav}`
-            : "flex justify-center align-middle flex-col"
+            : "flex justify-center align-middle"
         }`}
         >
         {isdashboard || isNotesSearchRoute ? <p>A note a day keeps the sup away</p> : ""}
 
-        <Logo className={`${styles.logo}`} width="52" height="72"/>
+        <div className={`${styles.logo_wrapper} flex justify-center`}>
+          <Logo className={`${styles.logo}`} width="52" height="72"/>
+          <p className={`ms-3 ${styles.platform_name}`}>The Jadi Platform</p>
+        </div>
 
         {isdashboard || isNotesSearchRoute ? (
           <Link className={`${styles.glass_link}`} href={"/dashboard"}>
