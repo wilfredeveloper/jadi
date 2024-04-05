@@ -46,7 +46,7 @@ export async function DashLayout({ userData }: DashLayoutProps) {
   return (
     <div className="w-full max-w-4xl px-4 py-6 space-y-6">
       {(await isAuthenticated) && (
-        <LogoutLink className="auth-button">🚶‍♂️Logout</LogoutLink>
+        <LogoutLink postLogoutRedirectURL="/" className="auth-button">🚶‍♂️Logout</LogoutLink>
       )}
       <div className="flex items-center space-x-4">
         <Avatar className="w-12 h-12">

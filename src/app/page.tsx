@@ -16,7 +16,7 @@ export default async function Home() {
         <p className={`${styles.hero_desc}`}>Stop wasting time searching for notes and start studying smarter with Jadi</p>
 
         <div className={`flex align-middle justify-evenly ${styles.btn_group}`}>
-          <LoginLink className={`${styles.btn_link}`}>
+          <LoginLink postLoginRedirectURL="/dashboard" className={`${styles.btn_link}`}>
             <Button variant="outline" size="lg"> Sign in </Button>
           </LoginLink>
 
