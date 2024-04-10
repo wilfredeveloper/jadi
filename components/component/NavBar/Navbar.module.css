@@ -19,6 +19,7 @@
 }
 .logo_wrapper {
     align-items: center;
+    width: 30%;
 }
 .platform_name {
     font-size: .85rem;
