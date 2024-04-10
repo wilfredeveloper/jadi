@@ -1,9 +1,11 @@
 import Link from "next/link";
-import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import AuthButtonsGroup from "./auth-buttons";
+import styles from "./navStyles.module.css"
 
 export default function NavLinks() {
   return (
-    <nav className="flex-1 w-full shrink-0 flex-col align-middle justify-center flex">
+    <nav className={`flex align-middle justify-around ${styles.nav}`}>
       <div className="flex justify-center align-middle">
         <Link
           className="flex text-sm h-10 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
@@ -26,6 +28,9 @@ export default function NavLinks() {
           BLOG
           <ArrowIcon />
         </Link>
+      </div>
+      <div>
+        <AuthButtonsGroup />
       </div>
     </nav>
   );
