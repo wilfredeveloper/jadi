@@ -5,6 +5,9 @@ import { writeFile } from "fs/promises";
 import { PostFile } from "../services/upload";
 
 export async function uploadNote(
+  prevState: {
+    message: string;
+  } | undefined,
   formData: FormData
 ) {
   const file = formData.get("file") as File;
@@ -25,15 +28,8 @@ export async function uploadNote(
     return;
   }
 
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const filename = file.name.replaceAll(" ", "_");
-
   try {
-    await writeFile(
-      path.join(process.cwd(), "public/assets/" + filename),
-      buffer
-    );
-
+    
     console.log("\n 🪵--> Trying to use PostFile function\n");
     await PostFile(file, tags, description, category, title);
 
