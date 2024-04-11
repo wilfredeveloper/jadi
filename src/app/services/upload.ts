@@ -1,9 +1,12 @@
-const fs = require("fs");
+// const fs = require("fs");
 import { Client } from "../config/sanity";
 import { connectFirestore } from "../config/firestore";
 
 const postToFirestore = async (data: any) => {
   const db = await connectFirestore();
+
+  if(!db) return console.log("Firestore not connected");
+  
   try {
     const docRef = await db.collection("files").doc();
     await docRef.set(data);
