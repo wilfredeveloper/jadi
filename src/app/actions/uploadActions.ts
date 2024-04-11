@@ -1,7 +1,4 @@
 "use server";
-
-import path from "path";
-import { writeFile } from "fs/promises";
 import { PostFile } from "../services/upload";
 
 export async function uploadNote(
