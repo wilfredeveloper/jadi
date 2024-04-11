@@ -2,11 +2,11 @@ import Image from "next/image";
 import styles from "./homepage.module.css"
 import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import { Button } from "@/components/ui/button";
-import { db } from "@/src/db";
-import { UserProfiles } from "../db/schema";
+// import { db } from "@/src/db";
+// import { UserProfiles } from "../db/schema";
 
 export default async function Home() {
-  const result = await db.select().from(UserProfiles);
+  // const result = await db.select().from(UserProfiles);
 
 
   return (
