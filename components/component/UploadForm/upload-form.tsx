@@ -20,10 +20,6 @@ import { uploadNote } from "@/src/app/actions/uploadActions";
 import { useToast } from "@/components/ui/use-toast";
 import { SpinnerRoundFilled } from "spinners-react";
 import { useEffect } from "react";
-
-interface UploadFormProps {
-  handleSubmit: (event: React.FormEvent) => void;
-}
 import { useFormState, useFormStatus } from "react-dom";
 
 const initialState = {
