@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import AuthButtonsGroup from "./auth-buttons";
-import styles from "./navStyles.module.css"
+import styles from "./navStyles.module.css";
+// import { fetchBasicUserData } from "@/src/app/utils/userUtils";
 
 export default function NavLinks() {
   return (
