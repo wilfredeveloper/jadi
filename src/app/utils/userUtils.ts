@@ -36,7 +36,6 @@ export async function fetchUserId() {
 
 // 📚 Helper function to fetch user data from the server
 export async function fetchComprehensiveUserData() {
-  "use server";
   // 🆔 Fetching the user ID
   const userID = (await fetchUserId()) || "";
   // 🌐 Making a request to the server to fetch user data
