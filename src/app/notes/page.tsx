@@ -22,23 +22,55 @@ type FileData = {
   url: string;
   createdAt: string;
   updatedAt: string;
+  description: string;
+  mimeType: string;
+  name: string;
+  cms_id: string;
+  Tags: string[];
+};
+
+type DocumentData = {
+  noteTitle: string;
+  extension: string;
+  description: string;
+  mimeType: string;
+  url: string;
+  createdAt: string;
+  size: number;
+  cms_id: string;
+  popularity: number;
+  name: string;
+  category: string;
+  Tags: string[];
+  updatedAt: string;
+  upvotes: number;
+  views: number;
+  saves: number;
 };
 
 export default async function SearchPage() {
   const documentData = await fetchFiles();
-  const fileData: FileData[] = documentData.map(doc => ({
-    saves: doc.saves,
-    views: doc.views,
-    upvotes: doc.upvotes,
-    popularity: doc.popularity,
-    category: doc.category,
-    size: doc.size,
-    noteTitle: doc.noteTitle,
-    extension: doc.extension,
-    url: doc.url,
-    createdAt: doc.createdAt,
-    updatedAt: doc.updatedAt,
-  }));
+  
+  const fileData: FileData[] = documentData.map((doc: DocumentData) => ({
+  saves: doc.saves,
+  views: doc.views,
+  upvotes: doc.upvotes,
+  popularity: doc.popularity,
+  category: doc.category,
+  size: doc.size,
+  noteTitle: doc.noteTitle,
+  extension: doc.extension,
+  url: doc.url,
+  createdAt: doc.createdAt,
+  updatedAt: doc.updatedAt,
+  description: doc.description,
+  mimeType: doc.mimeType,
+  name: doc.name,
+  cms_id: doc.cms_id,
+  Tags: doc.Tags,
+}));
+
+
   const savesWeight = 0.5;
   const viewsWeight = 0.3;
   const upVotesWeight = 0.2;
