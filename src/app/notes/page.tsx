@@ -10,13 +10,40 @@ import {
 import Link from "next/link";
 import styles from "./page.module.css";
 
+type FileData = {
+  saves: number;
+  views: number;
+  upvotes: number;
+  popularity: number;
+  category: string;
+  size: number;
+  noteTitle: string;
+  extension: string;
+  url: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export default async function SearchPage() {
-  const fileData = await fetchFiles();
+  const documentData = await fetchFiles();
+  const fileData: FileData[] = documentData.map(doc => ({
+    saves: doc.saves,
+    views: doc.views,
+    upvotes: doc.upvotes,
+    popularity: doc.popularity,
+    category: doc.category,
+    size: doc.size,
+    noteTitle: doc.noteTitle,
+    extension: doc.extension,
+    url: doc.url,
+    createdAt: doc.createdAt,
+    updatedAt: doc.updatedAt,
+  }));
   const savesWeight = 0.5;
   const viewsWeight = 0.3;
   const upVotesWeight = 0.2;
 
-  fileData.sort((a, b) => {
+  fileData.sort((a: FileData, b: FileData) => {
     const aScore =
       a.saves * savesWeight + a.views * viewsWeight + a.upvotes * upVotesWeight;
     const bScore =
