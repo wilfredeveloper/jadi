@@ -1,6 +1,5 @@
 import {
-  fetchBasicUserData,
-  fetchComprehensiveUserData,
+  fetchBasicUserData
 } from "../utils/userUtils";
 import { DashLayout } from "@/components/component/dash-layout";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";

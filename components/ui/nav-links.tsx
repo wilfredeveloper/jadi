@@ -5,27 +5,41 @@ import styles from "./navStyles.module.css";
 
 export default function NavLinks() {
   return (
-    <nav className={`flex align-middle justify-around ${styles.nav}`}>
-      <div className="flex justify-center align-middle">
+    <nav className={`flex align-middle justify-around flex-col ${styles.nav}`}>
+      <div className={`flex justify-between align-middle flex-col ${styles.links_wrapper}`}>
         <Link
-          className="flex text-sm h-10 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
+          className="flex text-xs h-2 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
           href="/about"
         >
           ABOUT
           <ArrowIcon />
         </Link>
         <Link
-          className="flex text-sm h-10 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
+          className="flex text-xs h-2 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
           href="#"
         >
           CONTACT US
           <ArrowIcon />
         </Link>
         <Link
-          className="flex text-sm h-10 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
+          className="flex text-xs h-2 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
           href="#"
         >
           BLOG
+          <ArrowIcon />
+        </Link>
+        <Link
+          className="flex text-xs h-2 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
+          href="/dashboard"
+        >
+          DASHBOARD
+          <ArrowIcon />
+        </Link>
+        <Link
+          className="flex text-xs h-2 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
+          href="/upload"
+        >
+          UPLOAD
           <ArrowIcon />
         </Link>
       </div>
@@ -40,8 +54,8 @@ function ArrowIcon() {
   return (
     <svg
       className="ms-2"
-      width="9"
-      height="9"
+      width="6"
+      height="6"
       viewBox="0 0 9 9"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
