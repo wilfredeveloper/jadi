@@ -1,0 +1,49 @@
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 5rem 12rem;
+  height: 100vh;
+}
+.search_box_wrapper {
+  width: 50%;
+  margin-bottom: 3rem;
+}
+.search_box {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  outline: none;
+  width: 75%;
+  border-radius: 0.75rem;
+  color: #000;
+  margin-right: 1rem;
+}
+.search_label {
+  cursor: pointer;
+}
+.category {
+  font-size: x-small;
+  color: antiquewhite;
+  position: absolute;
+  top: -2rem;
+  left: 0;
+}
+
+.card {
+  position: relative;
+  width: 23rem;
+  border-radius: 1.05rem;
+}
+
+.notes_gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 2.5rem;
+  grid-row-gap: 2rem;
+}
+
+.border_trending {
+  border: 2px solid #a7ffbd;
+}
