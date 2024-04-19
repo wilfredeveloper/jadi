@@ -93,20 +93,6 @@ export default async function SearchPage() {
     ...fileData.map((file) => file.updatedAtTime ?? 0)
   );
 
-  // fileData.sort((a: FileData, b: FileData) => {
-  //   const aScore =
-  //     a.saves * savesWeight +
-  //     a.views * viewsWeight +
-  //     a.upvotes * upVotesWeight +
-  //     (a.updatedAtTime ?? 0) * updatedAtWeight;
-  //   const bScore =
-  //     b.saves * savesWeight +
-  //     b.views * viewsWeight +
-  //     b.upvotes * upVotesWeight +
-  //     (b.updatedAtTime ?? 0) * updatedAtWeight;
-  //   return bScore - aScore;
-  // });
-
   //   calculate popularity of the notes by mapping through the fileData
   fileData.map((file, index) => {
     file.popularity =
