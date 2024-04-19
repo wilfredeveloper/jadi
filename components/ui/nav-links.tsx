@@ -9,7 +9,7 @@ export default function NavLinks() {
       <div className="flex justify-center align-middle">
         <Link
           className="flex text-sm h-10 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
-          href="#"
+          href="/about"
         >
           ABOUT
           <ArrowIcon />
