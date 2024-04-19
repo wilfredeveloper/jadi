@@ -1,5 +1,5 @@
 .nav {
-    align-items: center;
+    align-items: flex-start;
     height: 100%;
 }
 .links_wrapper {
