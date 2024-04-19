@@ -19,9 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} flex`}>
         <NavBar />
+        <main className={`main-content`}>
         {children}
+        </main>
         <Analytics />
         <Toaster />
       </body>
