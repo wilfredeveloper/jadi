@@ -1,4 +1,6 @@
 import { connectFirestore } from "../config/firestore";
+import chalk from "chalk";
+import firebase from "firebase-admin";
 
 type DocumentData = {
     noteTitle: string;
@@ -17,6 +19,7 @@ type DocumentData = {
     upvotes: number;
     views: number;
     saves: number;
+    updatedAtTime?: number | undefined;
   };
 
 export async function fetchFiles() {
@@ -27,10 +30,10 @@ export async function fetchFiles() {
          return [];
      };
      const fileCollection = await db?.collection('files').get();
-     const docs = fileCollection.docs.map(doc => doc.data() as DocumentData);
+     const docs = fileCollection.docs.map((doc: firebase.firestore.QueryDocumentSnapshot) => doc.data() as DocumentData);
      return docs;
-    } catch (error) {
-     console.error("\n---> [FIRESTORE]🚨 Error fetching documents: ", error);
+    } catch (error: any) {
+     console.error("\n---> [FIRESTORE]🚨 Error fetching documents: ", `\n\n+ Error details: ${chalk.red(error.details)}`);
      return [];
     }
  }
