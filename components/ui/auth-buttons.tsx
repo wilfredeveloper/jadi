@@ -15,16 +15,35 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 
 export default function AuthButtonsGroup() {
   const pathname = usePathname();
+  const { user } = useKindeBrowserClient();
+
+  if (user) {
+    return (
+      <div className="w-full">
+        <LogoutLink>
+        <Button
+            size={"sm"}
+            className="mx-2 auth_btn bg-zinc-400 w-full"
+            variant={"default"}
+          >
+            Logout
+            <AuthIcon />
+          </Button>
+      </LogoutLink>
+      </div>
+    );
+  }
   return (
     <div className={``}>
       <Dialog>
-        <DialogTrigger>
+        <DialogTrigger className="w-full">
           <Button
             size={"sm"}
-            className="mx-2 auth_btn bg-zinc-400"
+            className="mx-2 auth_btn bg-zinc-400 w-full"
             variant={"default"}
           >
             Get Authenticated
