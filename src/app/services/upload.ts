@@ -2,6 +2,32 @@
 import { Client } from "../config/sanity";
 import { connectFirestore } from "../config/firestore";
 
+const likeFile = async (fileId: string, userId: string) => {
+  const db = await connectFirestore();
+
+  if(!db) return console.log("Firestore not connected");
+
+  const fileRef = db.collection('files').doc(fileId);
+
+  // Use Firestore transaction to safely update the likes array
+  return db.runTransaction((transaction) => {
+    return transaction.get(fileRef).then((fileDoc) => {
+      if (!fileDoc.exists) {
+        throw "Document does not exist!";
+      }
+
+      // Get current likes array from the document
+      const likes = fileDoc.data()?.likes;
+
+      // If the user hasn't liked the document yet, add their ID to the likes array
+      if (likes && !likes.includes(userId)) {
+        likes.push(userId);
+        transaction.update(fileRef, { likes }); // Update the document in Firestore
+      }
+    });
+  });
+};
+
 const postToFirestore = async (data: any) => {
   const db = await connectFirestore();
 
@@ -59,4 +85,4 @@ const PostFile = async (
   }
 };
 
-export { PostFile };
+export { PostFile, likeFile };

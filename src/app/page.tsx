@@ -11,8 +11,12 @@ import {
 import Link from "next/link";
 import styles from "./page.module.css";
 import chalk from "chalk";
+import { fetchBasicUserData } from "./utils/userUtils";
+import { LikeButton } from "@/components/ui/action-buttons";
+import { likeFile as likeFileService } from "./services/upload";
 
 type FileData = {
+  id: string;
   saves: number;
   views: number;
   upvotes: number;
@@ -29,10 +33,12 @@ type FileData = {
   name: string;
   cms_id: string;
   Tags: string[];
+  likes: string[];
   updatedAtTime?: number | undefined;
 };
 
 type DocumentData = {
+  id: string;
   noteTitle: string;
   extension: string;
   description: string;
@@ -49,6 +55,7 @@ type DocumentData = {
   upvotes: number;
   views: number;
   saves: number;
+  likes: string[];
   updatedAtTime?: number | undefined;
 };
 
@@ -62,6 +69,7 @@ export default async function SearchPage() {
   }
 
   const fileData: FileData[] = documentData.map((doc: DocumentData) => ({
+    id: doc.id,
     saves: doc.saves,
     views: doc.views,
     upvotes: doc.upvotes,
@@ -78,6 +86,7 @@ export default async function SearchPage() {
     name: doc.name,
     cms_id: doc.cms_id,
     Tags: doc.Tags,
+    likes: doc.likes,
     updatedAtTime: new Date(doc.updatedAt).getTime(),
   }));
 
@@ -108,6 +117,9 @@ export default async function SearchPage() {
   });
 
   const trendingThreshold = 0.5;
+
+  const userData = await fetchBasicUserData();
+  const userId = userData?.id || "";
 
   return (
     <main className={`${styles.main}`}>
@@ -191,6 +203,9 @@ export default async function SearchPage() {
                   Download Note
                 </Link>
               </Button>
+
+              <LikeButton userId={userId} fileId={file.id} />
+              
             </CardFooter>
           </Card>
         ))}
