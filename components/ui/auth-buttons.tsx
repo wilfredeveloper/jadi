@@ -1,27 +1,21 @@
 "use client";
-import { usePathname } from "next/navigation";
 import { Button } from "./button";
-import styles from "./authButtonsStyles.module.css";
-import {
-  LoginLink,
-  RegisterLink,
-  LogoutLink,
-} from "@kinde-oss/kinde-auth-nextjs/components";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { Avatar } from "./avatar";
 import Image from "next/image";
+import AuthDialog from "./auth-dialog";
+import { useState } from "react";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 export default function AuthButtonsGroup() {
-  const pathname = usePathname();
   const { user } = useKindeBrowserClient();
+  const [isOpen, setIsOpen] = useState(false);
+
+  function showDialog() {
+    setIsOpen(true);
+  }
 
   if (user) {
     return (
@@ -57,40 +51,16 @@ export default function AuthButtonsGroup() {
         <DialogTrigger className="w-full">
           <Button
             size={"sm"}
-            className="mx-2 auth_btn bg-zinc-400 w-full"
+            className="mx-2 auth_btn bg-green-400 w-full"
             variant={"default"}
+            onClick={showDialog}
           >
-            Get Authenticated
+            Auth
             <AuthIcon />
           </Button>
         </DialogTrigger>
-        <DialogContent className={`${styles.dialog_content}`}>
-          <DialogHeader>
-            <DialogTitle>Choose the action you want to take</DialogTitle>
-            <DialogDescription>
-              You can choose to create a new account or login to an existing one
-            </DialogDescription>
-          </DialogHeader>
-
-          <div>
-            <LoginLink postLoginRedirectURL={`${pathname}`}>
-              <Button
-                size={"sm"}
-                className={`mx-2 auth_btn`}
-                variant={"outline"}
-              >
-                Sign in
-              </Button>
-            </LoginLink>
-
-            <RegisterLink postLoginRedirectURL={`${pathname}`}>
-              <Button size={"sm"} className="mx-2 auth_btn">
-                Create Account
-              </Button>
-            </RegisterLink>
-          </div>
-        </DialogContent>
       </Dialog>
+      <AuthDialog isOpen={isOpen} onOpenChange={setIsOpen}/>
     </div>
   );
 }

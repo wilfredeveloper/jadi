@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "./button";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./actionButtonStyles.module.css";
+import AuthDialog from "./auth-dialog";
 
 interface LikeButtonProps {
   hasLiked: boolean;
@@ -21,8 +22,12 @@ function LikeButton({
 }: LikeButtonProps) {
   const [hasLiked, setHasLiked] = useState(initialHasLiked);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleLikeClick = async () => {
+    if (userId === "") {
+      return setIsOpen(true);
+    }
     setHasLiked(!hasLiked);
     setLikeCount(hasLiked ? likeCount - 1 : likeCount + 1);
     try {
@@ -34,34 +39,37 @@ function LikeButton({
   };
 
   return (
-    <motion.div
-      className={`flex items-center ${styles.wrapper}`}
-      whileTap={{ scale: 0.9 }}
-      transition={{ duration: 0.25 }}
-    >
-      <div>
-        <Button
-          className={`${styles.btn}`}
-          size={"icon"}
-          variant={"outline"}
-          onClick={handleLikeClick}
-        >
-          {hasLiked ? <HeartIconFilled /> : <HeartIcon />}
-        </Button>
-      </div>
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={likeCount}
-          className={`text-slate-400 text-sm ${styles.like_count}`}
-          initial={{ y: 20,  opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -20, opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          {likeCount == 0 ? '': likeCount}
-        </motion.div>
-      </AnimatePresence>
-    </motion.div>
+    <>
+      <AuthDialog onNav={false} isOpen={isOpen} onOpenChange={setIsOpen} />
+      <motion.div
+        className={`flex items-center ${styles.wrapper}`}
+        whileTap={{ scale: 0.9 }}
+        transition={{ duration: 0.25 }}
+      >
+        <div>
+          <Button
+            className={`${styles.btn}`}
+            size={"icon"}
+            variant={"outline"}
+            onClick={handleLikeClick}
+          >
+            {hasLiked ? <HeartIconFilled /> : <HeartIcon />}
+          </Button>
+        </div>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={likeCount}
+            className={`text-slate-400 text-sm ${styles.like_count}`}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -20, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            {likeCount == 0 ? "" : likeCount}
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
+    </>
   );
 }
 
