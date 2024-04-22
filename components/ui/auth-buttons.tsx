@@ -22,7 +22,6 @@ import Image from "next/image";
 export default function AuthButtonsGroup() {
   const pathname = usePathname();
   const { user } = useKindeBrowserClient();
-  console.log(user);
 
   if (user) {
     return (

@@ -5,7 +5,6 @@ import { useState } from "react";
 import { Button } from "./button";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./actionButtonStyles.module.css";
-import { revalidatePath } from "next/cache";
 
 interface LikeButtonProps {
   hasLiked: boolean;
@@ -28,8 +27,7 @@ function LikeButton({
     setLikeCount(hasLiked ? likeCount - 1 : likeCount + 1);
     try {
       console.log("user ID: ", userId, "\n", "file ID: ", fileId);
-      await likeFile({ userId, fileId }, setHasLiked); // Pass an object to likeFile
-      revalidatePath("/");
+      await likeFile({ userId, fileId }, setHasLiked);
     } catch (error) {
       console.error("Error liking file:", error);
     }
