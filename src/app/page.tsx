@@ -13,7 +13,6 @@ import styles from "./page.module.css";
 import chalk from "chalk";
 import { fetchBasicUserData } from "./utils/userUtils";
 import { LikeButton } from "@/components/ui/action-buttons";
-import { likeFile as likeFileService } from "./services/upload";
 
 type FileData = {
   id: string;
@@ -194,7 +193,7 @@ export default async function SearchPage() {
                 </div>
               </div>
             </CardContent>
-            <CardFooter>
+            <CardFooter className={``}>
               <Button size={"sm"}>
                 <Link
                   className="text-sm underline font-medium dark:text-gray-300"
@@ -204,7 +203,7 @@ export default async function SearchPage() {
                 </Link>
               </Button>
 
-              <LikeButton userId={userId} fileId={file.id} />
+              <LikeButton userId={userId} fileId={file.id} hasLiked={file.likes.includes(userId)} likeCount={file.likes.length}/>
               
             </CardFooter>
           </Card>
