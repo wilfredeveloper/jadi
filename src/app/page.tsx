@@ -203,7 +203,7 @@ export default async function SearchPage() {
                 </Link>
               </Button>
 
-              <LikeButton userId={userId} fileId={file.id} hasLiked={file.likes.includes(userId)} likeCount={file.likes.length}/>
+              <LikeButton userId={userId} fileId={file.id} hasLiked={file.likes?.includes(userId)} likeCount={file.likes?.length}/>
               
             </CardFooter>
           </Card>

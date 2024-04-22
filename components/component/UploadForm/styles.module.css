@@ -1,7 +1,16 @@
 .form_card {
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
     padding: 2rem 4.5rem;
+    width: 80vw;
+}
+
+.card_content {
+    width: 60%;
+}
+.file_input {
+    cursor: pointer;
 }
 
 @media screen and (max-width: 425px) {
