@@ -1,67 +1,66 @@
 "use client";
+import { usePathname } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import styles from "./authButtonsStyles.module.css";
+
+import {
+  LoginLink,
+  RegisterLink,
+} from "@kinde-oss/kinde-auth-nextjs/components";
+
 import { Button } from "./button";
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { Avatar } from "./avatar";
-import Image from "next/image";
-import AuthDialog from "./auth-dialog";
-import { useState } from "react";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+interface AuthDialogProps {
+  onNav?: boolean;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
 
-export default function AuthButtonsGroup() {
-  const { user } = useKindeBrowserClient();
-  const [isOpen, setIsOpen] = useState(false);
-
-  function showDialog() {
-    setIsOpen(true);
-  }
-
-  if (user) {
-    return (
-      <div className="w-full">
-        <LogoutLink className={`flex items-center`}>
-          <Avatar className="w-9 h-9 me-2">
-            <Image
-              alt="User Profile Photo"
-              className="rounded-full object-cover"
-              height="48"
-              src={user?.picture || "/placeholder-square.svg"}
-              style={{
-                objectFit: "cover",
-              }}
-              width="48"
-            />
-          </Avatar>
-          <Button
-            size={"sm"}
-            className="auth_btn bg-red-400 w-full py-4"
-            variant={"default"}
-          >
-            Logout
-            <AuthIcon />
-          </Button>
-        </LogoutLink>
-      </div>
-    );
-  }
+export default function AuthDialog({
+  onNav = false,
+  isOpen = false,
+  onOpenChange,
+}: AuthDialogProps) {
+  const pathname = usePathname();
   return (
-    <div className={``}>
-      <Dialog>
-        <DialogTrigger className="w-full">
-          <Button
-            size={"sm"}
-            className="mx-2 auth_btn bg-green-400 w-full"
-            variant={"default"}
-            onClick={showDialog}
-          >
-            Auth
-            <AuthIcon />
-          </Button>
-        </DialogTrigger>
-      </Dialog>
-      <AuthDialog isOpen={isOpen} onOpenChange={setIsOpen}/>
-    </div>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+
+      <DialogContent className={`${styles.dialog_content}`}>
+        <DialogHeader>
+          <DialogTitle>Choose the action you want to take</DialogTitle>
+          <DialogDescription>
+            You can choose to create a new account or login to an existing one
+          </DialogDescription>
+        </DialogHeader>
+
+        <div>
+          <LoginLink postLoginRedirectURL={`${pathname}`}>
+            <Button size={"sm"} className={`mx-2 auth_btn`} variant={"outline"}>
+              Sign in
+            </Button>
+          </LoginLink>
+
+          <RegisterLink postLoginRedirectURL={`${pathname}`}>
+            <Button size={"sm"} className="mx-2 auth_btn">
+              Create Account
+            </Button>
+          </RegisterLink>
+        </div>
+        <DialogFooter>
+          <p className={`text-slate-500 text-sm capitalize`}>
+            Designed at pxum studios
+          </p>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
