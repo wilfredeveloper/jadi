@@ -15,25 +15,40 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { Avatar } from "./avatar";
+import Image from "next/image";
 
 export default function AuthButtonsGroup() {
   const pathname = usePathname();
   const { user } = useKindeBrowserClient();
+  console.log(user);
 
   if (user) {
     return (
       <div className="w-full">
-        <LogoutLink>
-        <Button
+        <LogoutLink className={`flex items-center`}>
+          <Avatar className="w-9 h-9 me-2">
+            <Image
+              alt="User Profile Photo"
+              className="rounded-full object-cover"
+              height="48"
+              src={user?.picture || "/placeholder-square.svg"}
+              style={{
+                objectFit: "cover",
+              }}
+              width="48"
+            />
+          </Avatar>
+          <Button
             size={"sm"}
-            className="mx-2 auth_btn bg-zinc-400 w-full"
+            className="auth_btn bg-red-400 w-full py-4"
             variant={"default"}
           >
             Logout
             <AuthIcon />
           </Button>
-      </LogoutLink>
+        </LogoutLink>
       </div>
     );
   }
@@ -84,7 +99,7 @@ export default function AuthButtonsGroup() {
 function AuthIcon(props: any) {
   return (
     <svg
-    className="ms-2"
+      className="ms-2"
       width="18"
       height="18"
       viewBox="0 0 25 25"
