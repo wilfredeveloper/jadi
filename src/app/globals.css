@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import "~spinners-react/lib/index.css";
 
 body {
   color: #fff;
@@ -23,4 +23,22 @@ body {
 .main-content {
   width: 85%;
   overflow-y: scroll;
+}
+
+.loader-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loader_heading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 5rem;
+}
+
+.loader_description {
+  margin-bottom: 5rem;
 }
