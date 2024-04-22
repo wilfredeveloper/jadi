@@ -1,15 +1,22 @@
-import { AddForm } from "./add-form"
+import { SpinnerDotted } from "spinners-react";
+import Logo from "@/components/ui/logo";
 
 export default async function Home() {
-
   return (
-    <main>
-      <h1 className="sr-only">Todos</h1>
-      <AddForm />
-      <ul>
-        <li>Todo 1</li>
-        <li>Todo 2</li>
-      </ul>
+    <main className={`loader-container`}>
+      
+      <Logo width="42" height="52" />
+
+      <div className="text-center">
+        <h1 className={`loader_heading`}>
+          Patience is a Virtue, Especially for Slow Wi-Fi
+        </h1>
+        <p className={`loader_description text-slate-400`}>
+          Please wait while we gather the finest pixels
+        </p>
+      </div>
+
+      <SpinnerDotted />
     </main>
   );
 }

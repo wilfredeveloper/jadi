@@ -52,6 +52,7 @@ const PostFile = async (
       views: 0, // Initialize views with 0
       popularity: 0, // Initialize popularity with 0
       saves: 0, // Initialize saves with 0
+      likes: [],
     });
     return
   } catch (error) {

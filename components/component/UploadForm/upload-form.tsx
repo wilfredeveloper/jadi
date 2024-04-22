@@ -41,7 +41,7 @@ function SubmitButton() {
 
   return (
     <Button type="submit" size={"sm"}>
-      Upload Note { pending && <SpinnerRoundFilled size={20} /> }
+      Upload Note {pending && <SpinnerRoundFilled size={20} />}
     </Button>
   );
 }
@@ -51,29 +51,31 @@ export function UploadForm() {
 
   return (
     <form action={formAction}>
-      <Card className={`w-full max-w-2xl ${styles.form_card}`}>
+      <Card className={`${styles.form_card}`}>
         <CardHeader>
-          { <h1>{state?.message}</h1> || <h1>Message will appear here</h1> }
+          {<h1>{state?.message}</h1> || <h1>Message will appear here</h1>}
           <CardTitle>Upload Note</CardTitle>
-          <CardDescription>Add your note by uploading a file.</CardDescription>
+          <CardDescription className="mb-4">
+            Add your note by uploading a file.
+          </CardDescription>
+          <div className="grid gap-4">
+            <Label className="text-sm" htmlFor="file">
+              <span className="flex items-center">
+                <ArrowUpIcon className="mr-1.5 w-4 h-4" />
+                Upload File
+              </span>
+            </Label>
+            <Input
+              className={`w-full text-sm h-16 ${styles.file_input}`}
+              id="file"
+              placeholder="Select a file"
+              type="file"
+              name="file"
+            />
+          </div>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-6">
-            <div className="grid gap-4">
-              <Label className="text-sm" htmlFor="file">
-                <span className="flex items-center">
-                  <ArrowUpIcon className="mr-1.5 w-4 h-4" />
-                  Upload File
-                </span>
-              </Label>
-              <Input
-                className="w-full text-sm"
-                id="file"
-                placeholder="Select a file"
-                type="file"
-                name="file"
-              />
-            </div>
+        <CardContent className={`${styles.card_content}`}>
+          <div className={`space-y-6`}>
             <div className="grid gap-4">
               <Label className="text-sm" htmlFor="title">
                 <span className="flex items-center">
@@ -82,7 +84,7 @@ export function UploadForm() {
                 </span>
               </Label>
               <Input
-                className="text-sm w-full"
+                className="text-sm w-full h-16"
                 id="title"
                 name="title"
                 placeholder="Enter a title"
@@ -96,7 +98,7 @@ export function UploadForm() {
                 </span>
               </Label>
               <Input
-                className="text-sm w-full"
+                className="text-sm w-full h-16"
                 id="description"
                 name="description"
                 type="textarea"
@@ -110,13 +112,13 @@ export function UploadForm() {
                   Tags
                 </span>
               </Label>
+              <div className="text-xs text-slate-500">Comma-separated list of tags.</div>
               <Input
-                className="text-sm w-full"
+                className="text-sm w-full h-16"
                 id="tags"
                 name="tags"
                 placeholder="Example: Computer Science, Math, etc."
               />
-              <div className="text-xs">Comma-separated list of tags.</div>
             </div>
             <div className="grid gap-4">
               <Label className="text-sm" htmlFor="tags">
@@ -125,13 +127,15 @@ export function UploadForm() {
                   Category
                 </span>
               </Label>
+              <div className="text-xs text-slate-500">
+                This is like a row in a Library where your note will be placed
+              </div>
               <Input
-                className="text-sm w-full"
+                className="text-sm w-full h-16"
                 id="tags"
                 name="category"
                 placeholder="Enter Category"
               />
-              <div className="text-xs">This is like a row in a Library where your note will be placed</div>
             </div>
             <SubmitButton />
           </div>
@@ -170,7 +174,7 @@ function PencilIcon(props: React.SVGProps<SVGSVGElement>) {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      stroke="yellow"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -190,7 +194,7 @@ function TagIcon(props: React.SVGProps<SVGSVGElement>) {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      stroke="yellow"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
