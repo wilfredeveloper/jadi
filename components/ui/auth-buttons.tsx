@@ -17,50 +17,33 @@ export default function AuthButtonsGroup() {
     setIsOpen(true);
   }
 
-  if (user) {
-    return (
-      <div className="w-full">
-        <LogoutLink className={`flex items-center`}>
-          <Avatar className="w-9 h-9 me-2">
-            <Image
-              alt="User Profile Photo"
-              className="rounded-full object-cover"
-              height="48"
-              src={user?.picture || "/placeholder-square.svg"}
-              style={{
-                objectFit: "cover",
-              }}
-              width="48"
-            />
-          </Avatar>
-          <Button
-            size={"sm"}
-            className="auth_btn bg-red-400 w-full py-4"
-            variant={"default"}
-          >
-            Logout
-            <AuthIcon />
-          </Button>
-        </LogoutLink>
-      </div>
-    );
-  }
   return (
     <div className={``}>
       <Dialog>
-        <DialogTrigger className="w-full">
+        {user ? (
           <Button
-            size={"sm"}
-            className="mx-2 auth_btn bg-green-400 w-full"
-            variant={"default"}
-            onClick={showDialog}
-          >
-            Auth
-            <AuthIcon />
-          </Button>
-        </DialogTrigger>
+          size={"sm"}
+          className="mx-2 auth_btn bg-red-500 w-full"
+          variant={"default"}
+        >
+          <LogoutLink postLogoutRedirectURL="/"> Logout </LogoutLink>
+          <AuthIcon />
+        </Button>
+        ) : (
+          <DialogTrigger className="w-full">
+            <Button
+              size={"sm"}
+              className="mx-2 auth_btn bg-green-400 w-full"
+              variant={"default"}
+              onClick={showDialog}
+            >
+              Auth
+              <AuthIcon />
+            </Button>
+          </DialogTrigger>
+        )}
       </Dialog>
-      <AuthDialog isOpen={isOpen} onOpenChange={setIsOpen}/>
+      <AuthDialog isOpen={isOpen} onOpenChange={setIsOpen} />
     </div>
   );
 }

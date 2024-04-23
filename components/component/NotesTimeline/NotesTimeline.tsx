@@ -1,5 +1,8 @@
+import styles from "./NotesTimeline.module.css";
 import { Button } from "@/components/ui/button";
-import { fetchFiles } from "./services/fetchFirestoreFiles";
+import Link from "next/link";
+import { LikeButton } from "@/components/ui/action-buttons";
+
 import {
   Card,
   CardHeader,
@@ -8,147 +11,107 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
-import Link from "next/link";
-import styles from "./page.module.css";
-import chalk from "chalk";
-import { fetchBasicUserData } from "./utils/userUtils";
-import { LikeButton } from "@/components/ui/action-buttons";
-import NotesTimeline from "@/components/component/NotesTimeline/NotesTimeline";
+import DownloadButton from "@/components/ui/download-button";
 
-type FileData = {
-  id: string;
-  saves: number;
-  views: number;
-  upvotes: number;
-  popularity: number;
-  category: string;
-  size: number;
-  noteTitle: string;
-  extension: string;
-  url: string;
-  createdAt: string;
-  updatedAt: string;
-  description: string;
-  mimeType: string;
-  name: string;
-  cms_id: string;
-  Tags: string[];
-  likes: string[];
-  updatedAtTime?: number | undefined;
-};
+interface FileData {
+    id: string;
+    saves: number;
+    views: number;
+    upvotes: number;
+    popularity: number;
+    category: string;
+    size: number;
+    noteTitle: string;
+    extension: string;
+    url: string;
+    createdAt: string;
+    updatedAt: string;
+    description: string;
+    mimeType: string;
+    name: string;
+    cms_id: string;
+    Tags: string[];
+    likes: string[];
+    updatedAtTime?: number | undefined;
+}
 
-type DocumentData = {
-  id: string;
-  noteTitle: string;
-  extension: string;
-  description: string;
-  mimeType: string;
-  url: string;
-  createdAt: string;
-  size: number;
-  cms_id: string;
-  popularity: number;
-  name: string;
-  category: string;
-  Tags: string[];
-  updatedAt: string;
-  upvotes: number;
-  views: number;
-  saves: number;
-  likes: string[];
-  updatedAtTime?: number | undefined;
-};
+interface TimelineProps {
+  fileData: Array<FileData>;
+  trendingThreshold: number;
+  userId: string;
+  className?: string;
+}
 
-export default async function Page() {
-  let documentData: DocumentData[] = [];
-
-  try {
-    documentData = await fetchFiles();
-  } catch (error) {
-    console.log(`${chalk.yellowBright("\n\n ---> Network Error")}`);
-  }
-
-  const fileData: FileData[] = documentData.map((doc: DocumentData) => ({
-    id: doc.id,
-    saves: doc.saves,
-    views: doc.views,
-    upvotes: doc.upvotes,
-    popularity: doc.popularity,
-    category: doc.category,
-    size: doc.size,
-    noteTitle: doc.noteTitle,
-    extension: doc.extension,
-    url: doc.url,
-    createdAt: doc.createdAt,
-    updatedAt: doc.updatedAt,
-    description: doc.description,
-    mimeType: doc.mimeType,
-    name: doc.name,
-    cms_id: doc.cms_id,
-    Tags: doc.Tags,
-    likes: doc.likes,
-    updatedAtTime: new Date(doc.updatedAt).getTime(),
-  }));
-
-  const savesWeight = 0.3;
-  const viewsWeight = 0.15;
-  const upVotesWeight = 0.5;
-  const updatedAtWeight = 0.05;
-
-  const maxSaves = Math.max(...fileData.map((file) => file.saves));
-  const maxViews = Math.max(...fileData.map((file) => file.views));
-  const maxUpvotes = Math.max(...fileData.map((file) => file.upvotes));
-  const maxUpdatedAtTime = Math.max(
-    ...fileData.map((file) => file.updatedAtTime ?? 0)
-  );
-
-  //   calculate popularity of the notes by mapping through the fileData
-  fileData.map((file, index) => {
-    file.popularity =
-      (file.saves / maxSaves) * savesWeight +
-      (file.views / maxViews) * viewsWeight +
-      (file.upvotes / maxUpvotes) * upVotesWeight +
-      ((file.updatedAtTime ?? 0) / maxUpdatedAtTime) * updatedAtWeight;
-  });
-
-  // sort by popularity
-  fileData.sort((a: FileData, b: FileData) => {
-    return b.popularity - a.popularity;
-  });
-
-  const trendingThreshold = 0.7;
-
-  const userData = await fetchBasicUserData();
-  const userId = userData?.id || "";
-
+export default function NotesTimeline({ fileData, trendingThreshold, userId, className }: TimelineProps) {
   return (
-    <main className={`${styles.main}`}>
-      <NotesTimeline
-          className={`${styles.notes_timeline_component}`}
-          userId={userId}
-          trendingThreshold={trendingThreshold}
-          fileData={fileData}
-        />
+    <div className={`${styles.notes_timeline} ${className}`}>
+      {fileData.map((file, index) => (
+        <Card
+          key={index}
+          className={`${styles.card} ${
+            file.popularity > trendingThreshold && styles.border_trending
+          }`}
+        >
+          <CardHeader className="pb-0 mb-3">
+            <div>
+              {file.popularity > trendingThreshold ? (
+                <div className="flex items-center gap-2">
+                  <TrendingIcon />
+                  <small>Trending</small>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="grid grid-cols-2 text-sm/relaxed gap-4">
+              <div className="flex items-center gap-1">
+                <UpvotesIcon className="w-4 h-4 mr-1.5 flex-shrink-0" />
+                <span>Upvotes {file.upvotes}</span>
+              </div>
 
-      <div
-        className={`${styles.ads_section} flex flex-col justify-between items-start align-top`}
-      >
-        <div className={`${styles.search_box_wrapper}`}>
-          <input
-            className={`${styles.search_box}`}
-            type="text"
-            id="search"
-            name="search"
-          />
-          <Button>
-            <label className={`${styles.search_label}`} htmlFor="search">
-              Go
-            </label>
-          </Button>
-        </div>
-        <p>Ads coming soon</p>
-      </div>
-    </main>
+              <div className="flex items-center gap-1">
+                <FileIcon className="w-4 h-4 mr-1.5 flex-shrink-0" />
+                <span>
+                  <span className="font-bold text-sm">
+                    {(file.size / 1048576).toFixed(2)} MB
+                  </span>
+                </span>
+              </div>
+            </div>
+
+            <CardTitle className="text-2xl">{file.noteTitle}</CardTitle>
+            <CardDescription>{file.extension}</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-2">
+            <div className="grid grid-cols-1 text-sm/relaxed gap-4 my-5">
+              <p>{file.description}</p>
+              <div className="flex items-center gap-1">
+                <CalendarIcon className="w-4 h-4 mr-1.5 flex-shrink-0" />
+                <time dateTime="2024-04-11T18:09:08Z">
+                  Last published at{" "}
+                  <span className="font-bold">
+                    {new Date(file.updatedAt).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
+                </time>
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter className={``}>
+            <DownloadButton url={file.url}/>
+            <LikeButton
+              userId={userId}
+              fileId={file.id}
+              hasLiked={file.likes?.includes(userId)}
+              likeCount={file.likes?.length}
+            />
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
   );
 }
 

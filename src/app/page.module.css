@@ -2,13 +2,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-direction: column;
-  padding: 5rem 12rem;
-  height: 100vh;
+  padding: 0rem;
+  /* height: 100vh; */
 }
+
 .search_box_wrapper {
-  width: 50%;
-  margin-bottom: 3rem;
+  width: 100%;
 }
 .search_box {
   padding: 0.75rem 1.25rem;
@@ -22,28 +21,15 @@
 .search_label {
   cursor: pointer;
 }
-.category {
-  font-size: x-small;
-  color: antiquewhite;
-  position: absolute;
-  top: -2rem;
-  left: 0;
-}
 
-.card {
-  position: relative;
-  width: 23rem;
-  border-radius: 1.05rem;
+.ads_section {
+  width: 50%;
+  height: 100%;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  padding-inline: 2rem;
 }
-
-.notes_gallery {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  grid-column-gap: 2.5rem;
-  grid-row-gap: 2rem;
-}
-
-.border_trending {
-  border: 2px solid #a7ffbd;
+.notes_timeline_component {
+  padding-top: 5rem;
+  border-right: 1px solid #5a5a5a65;
 }

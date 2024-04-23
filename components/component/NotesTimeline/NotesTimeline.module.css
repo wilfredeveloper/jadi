@@ -1,0 +1,19 @@
+.card {
+  position: relative;
+  border-radius: 0;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #5a5a5a65;
+  padding-inline: 2rem;
+}
+
+.notes_timeline {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-column-gap: 0rem;
+  width: 100%;
+}
+
+.border_trending {
+  border: 2px solid #a7ffbd;
+}

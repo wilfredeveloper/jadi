@@ -84,7 +84,7 @@ function HeartIconFilled(props: any) {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        fill-rule="evenodd"
+        fillRule="evenodd"
         clipRule="evenodd"
         d="M12 1.94075C18.6572 -4.79695 35.3016 6.99328 12 22.1538C-11.3016 6.99476 5.34282 -4.79695 12 1.94075Z"
         fill="#FF254C"

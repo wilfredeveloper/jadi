@@ -20,7 +20,7 @@ export default function Component() {
         <Logo className={`${styles.logo}`} width="32" height="52" />
       </div>
 
-      {isdashboard ? "" : <NavLinks />}
+      {!isdashboard && <NavLinks />}
     </aside>
   );
 }

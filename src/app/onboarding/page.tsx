@@ -1,4 +1,4 @@
-import OnboardingComponent from "@/components/OnboardingComponent/OnboardingComponent";
+import OnboardingComponent from "@/components/component/OnboardingComponent/OnboardingComponent";
 import { fetchBasicUserData } from "../utils/userUtils";
 import styles from "./page.module.css"
 import { SparklesCore } from "@/components/ui/sparkles";

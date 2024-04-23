@@ -10,6 +10,7 @@ import { CardHeader, CardContent, Card } from "@/components/ui/card";
 import { db } from "@/src/db";
 import { UserProfiles } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
+import styles from "./dashLayoutStyles.module.css"
 
 interface DashLayoutProps {
   userData: {
@@ -63,7 +64,7 @@ export async function DashLayout({ userData }: DashLayoutProps) {
           />
         </Avatar>
         <div className="space-y-1.5">
-          <h1 className="text-3xl font-bold">Hi, {userData.given_name}</h1>
+          <h1 className={`text-3xl font-bold ${styles.given_name}`}>Glad to see you {userData.given_name}</h1>
           <p className="text-gray-500 dark:text-gray-400">{userData.email}</p>
         </div>
       </div>

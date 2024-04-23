@@ -21,8 +21,8 @@ body {
 }
 
 .main-content {
-  width: 85%;
-  overflow-y: scroll;
+  width: 80%;
+  /* overflow-y: scroll; */
 }
 
 .loader-container {
