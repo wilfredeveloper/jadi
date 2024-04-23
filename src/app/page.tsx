@@ -13,6 +13,7 @@ import styles from "./page.module.css";
 import chalk from "chalk";
 import { fetchBasicUserData } from "./utils/userUtils";
 import { LikeButton } from "@/components/ui/action-buttons";
+import NotesTimeline from "@/components/component/NotesTimeline/NotesTimeline";
 
 type FileData = {
   id: string;
@@ -58,7 +59,7 @@ type DocumentData = {
   updatedAtTime?: number | undefined;
 };
 
-export default async function SearchPage() {
+export default async function Page() {
   let documentData: DocumentData[] = [];
 
   try {
@@ -115,99 +116,37 @@ export default async function SearchPage() {
     return b.popularity - a.popularity;
   });
 
-  const trendingThreshold = 0.5;
+  const trendingThreshold = 0.7;
 
   const userData = await fetchBasicUserData();
   const userId = userData?.id || "";
 
   return (
     <main className={`${styles.main}`}>
-      <div className={`${styles.search_box_wrapper}`}>
-        <input
-          className={`${styles.search_box}`}
-          type="text"
-          id="search"
-          name="search"
+      <NotesTimeline
+          className={`${styles.notes_timeline_component}`}
+          userId={userId}
+          trendingThreshold={trendingThreshold}
+          fileData={fileData}
         />
-        <Button>
-          <label className={`${styles.search_label}`} htmlFor="search">
-            Go
-          </label>
-        </Button>
-      </div>
 
-      <div className={`${styles.notes_gallery}`}>
-        {fileData.map((file, index) => (
-          <Card
-            key={index}
-            className={`${styles.card} ${
-              file.popularity > trendingThreshold && styles.border_trending
-            }`}
-          >
-            <CardHeader className="pb-0 mb-3">
-              <div>
-                {file.popularity > trendingThreshold ? (
-                  <div className="flex items-center gap-2">
-                    <TrendingIcon />
-                    <small>Trending</small>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              <p className={`${styles.category}`}>{file.category}</p>
-              <div className="grid grid-cols-2 text-sm/relaxed gap-4">
-                <div className="flex items-center gap-1">
-                  <UpvotesIcon className="w-4 h-4 mr-1.5 flex-shrink-0" />
-                  <span>Upvotes {file.upvotes}</span>
-                </div>
-
-                <div className="flex items-center gap-1">
-                  <FileIcon className="w-4 h-4 mr-1.5 flex-shrink-0" />
-                  <span>
-                    <span className="font-bold text-sm">
-                      {(file.size / 1048576).toFixed(2)} MB
-                    </span>
-                  </span>
-                </div>
-              </div>
-
-              <CardTitle className="text-2xl">{file.noteTitle}</CardTitle>
-              <CardDescription>{file.extension}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-2">
-              <div className="grid grid-cols-1 text-sm/relaxed gap-4 my-5">
-                <p>{file.description}</p>
-                <div className="flex items-center gap-1">
-                  <CalendarIcon className="w-4 h-4 mr-1.5 flex-shrink-0" />
-                  <time dateTime="2024-04-11T18:09:08Z">
-                    Last published at{" "}
-                    <span className="font-bold">
-                      {new Date(file.updatedAt).toLocaleDateString("en-US", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </span>
-                  </time>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className={``}>
-              <Button size={"sm"}>
-                <Link
-                  className="text-sm underline font-medium dark:text-gray-300"
-                  href={file.url}
-                >
-                  Download Note
-                </Link>
-              </Button>
-
-              <LikeButton userId={userId} fileId={file.id} hasLiked={file.likes?.includes(userId)} likeCount={file.likes?.length}/>
-              
-            </CardFooter>
-          </Card>
-        ))}
+      <div
+        className={`${styles.ads_section} flex flex-col justify-between items-start align-top`}
+      >
+        <div className={`${styles.search_box_wrapper}`}>
+          <input
+            className={`${styles.search_box}`}
+            type="text"
+            id="search"
+            name="search"
+          />
+          <Button>
+            <label className={`${styles.search_label}`} htmlFor="search">
+              Go
+            </label>
+          </Button>
+        </div>
+        <p>Ads coming soon</p>
       </div>
     </main>
   );
