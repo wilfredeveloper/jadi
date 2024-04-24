@@ -17,11 +17,6 @@ export default function DownloadButton({ url }: DownloadButtonProps) {
   return (
     <Button
       size={"sm"}
-      onClick={(e) => {
-        if (e.ctrlKey || e.metaKey) {
-          e.preventDefault();
-        }
-      }}
       onContextMenu={(e) => {
         e.preventDefault();
       }}
@@ -29,7 +24,6 @@ export default function DownloadButton({ url }: DownloadButtonProps) {
       <Link
         className="text-sm font-medium dark:text-zinc-900"
         href={url}
-        download
       >
         Download Note
       </Link>

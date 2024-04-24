@@ -16,9 +16,9 @@ type DocumentData = {
   category: string;
   Tags: string[];
   updatedAt: string;
-  upvotes: number;
+  upvotes: string[];
   views: number;
-  saves: number;
+  saves: string[];
   likes: string[];
   updatedAtTime?: number | undefined;
 };

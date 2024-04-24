@@ -44,5 +44,37 @@ const likeFile = async (
     console.log("\n --> Error Liking file: ", error);
   }
 };
+const UpvoteFile = async (
+  { userId, fileId }: fileProps,
+  callback: (hasLiked: boolean) => void
+) => {
+  const db = firestoreClientDB;
 
-export { likeFile };
+  if (!db) return console.log("Firestore not connected");
+
+  try {
+    const fileRef = doc(db, "files", fileId);
+    const fileDoc = await getDoc(fileRef);
+
+    if (!fileDoc.exists()) {
+      throw "Document does not exist!";
+    }
+
+    const upvotes = fileDoc.data()?.upvotes;
+
+    // if user hasn't liked the document yet, add their ID to the likes array
+    if (upvotes && !upvotes.includes(userId)) {
+      upvotes.push(userId);
+      await updateDoc(fileRef, { upvotes });
+      callback(true); // Call the callback function with true
+    } else {
+      upvotes.splice(upvotes.indexOf(userId), 1);
+      await updateDoc(fileRef, { upvotes });
+      callback(false); // Call the callback function with false
+    }
+  } catch (error) {
+    console.log("\n --> Error Liking file: ", error);
+  }
+};
+
+export { likeFile, UpvoteFile };

@@ -34,13 +34,13 @@ export async function uploadNote(
       "\n 👍--> [ from api/upload/route.ts ] File uploaded successfully\n"
     );
 
-    return { message: "Success" };
+    return { message: "Note was uploaded Successfully" };
   } catch (error) {
     console.log(
       "\n 🚨---> [ from api/upload/route.ts ] An error occured during upload\n",
       error,
       "\n"
     );
-    return { message: "Failed" };
+    return { message: "Failed to upload Note! Try again" };
   }
 }

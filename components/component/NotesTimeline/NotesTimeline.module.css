@@ -5,6 +5,11 @@
   background-color: transparent;
   border-bottom: 1px solid #5a5a5a65;
   padding-inline: 2rem;
+  transition: all 0.05s ease-in;
+}
+.card:hover {
+  background-color: #f5f5f505;
+  cursor: pointer;
 }
 
 .notes_timeline {
@@ -16,4 +21,16 @@
 
 .border_trending {
   border: 2px solid #a7ffbd;
+}
+.file_extension {
+  background-color: #a7ffbd;
+  width:fit-content;
+  font-size: small;
+  padding: .15rem .75rem;
+  border-radius: .5rem;
+  color: #000;
+  font-weight: 600;
+}
+.file_description {
+  /* color: #adadad; */
 }
