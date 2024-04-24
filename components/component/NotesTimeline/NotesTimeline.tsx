@@ -1,7 +1,5 @@
 import styles from "./NotesTimeline.module.css";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { LikeButton } from "@/components/ui/action-buttons";
+import { LikeButton, UpvoteButton } from "@/components/ui/action-buttons";
 
 import {
   Card,
@@ -15,9 +13,9 @@ import DownloadButton from "@/components/ui/download-button";
 
 interface FileData {
     id: string;
-    saves: number;
+    saves: string[];
     views: number;
-    upvotes: number;
+    upvotes: string[];
     popularity: number;
     category: string;
     size: number;
@@ -66,7 +64,7 @@ export default function NotesTimeline({ fileData, trendingThreshold, userId, cla
             <div className="grid grid-cols-2 text-sm/relaxed gap-4">
               <div className="flex items-center gap-1">
                 <UpvotesIcon className="w-4 h-4 mr-1.5 flex-shrink-0" />
-                <span>Upvotes {file.upvotes}</span>
+                <span>Upvotes {file.upvotes.length}</span>
               </div>
 
               <div className="flex items-center gap-1">
@@ -80,15 +78,15 @@ export default function NotesTimeline({ fileData, trendingThreshold, userId, cla
             </div>
 
             <CardTitle className="text-2xl">{file.noteTitle}</CardTitle>
-            <CardDescription>{file.extension}</CardDescription>
+            <CardDescription className={`${styles.file_extension}`}>{file.extension}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
             <div className="grid grid-cols-1 text-sm/relaxed gap-4 my-5">
-              <p>{file.description}</p>
+              <p className={`${styles.file_description} text-slate-400 my-2`}>{file.description}</p>
               <div className="flex items-center gap-1">
                 <CalendarIcon className="w-4 h-4 mr-1.5 flex-shrink-0" />
                 <time dateTime="2024-04-11T18:09:08Z">
-                  Last published at{" "}
+                  Uploaded on{" "}
                   <span className="font-bold">
                     {new Date(file.updatedAt).toLocaleDateString("en-US", {
                       day: "numeric",
@@ -107,6 +105,12 @@ export default function NotesTimeline({ fileData, trendingThreshold, userId, cla
               fileId={file.id}
               hasLiked={file.likes?.includes(userId)}
               likeCount={file.likes?.length}
+            />
+            <UpvoteButton
+              userId={userId}
+              fileId={file.id}
+              hasUpvoted={file.upvotes?.includes(userId)}
+              upvoteCount={file.upvotes?.length}
             />
           </CardFooter>
         </Card>

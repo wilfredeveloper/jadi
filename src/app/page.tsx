@@ -1,25 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { fetchFiles } from "./services/fetchFirestoreFiles";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardDescription,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
-import Link from "next/link";
 import styles from "./page.module.css";
 import chalk from "chalk";
 import { fetchBasicUserData } from "./utils/userUtils";
-import { LikeButton } from "@/components/ui/action-buttons";
 import NotesTimeline from "@/components/component/NotesTimeline/NotesTimeline";
 
 type FileData = {
   id: string;
-  saves: number;
+  saves: string[];
   views: number;
-  upvotes: number;
+  upvotes: string[];
   popularity: number;
   category: string;
   size: number;
@@ -52,9 +42,9 @@ type DocumentData = {
   category: string;
   Tags: string[];
   updatedAt: string;
-  upvotes: number;
+  upvotes: string[];
   views: number;
-  saves: number;
+  saves: string[];
   likes: string[];
   updatedAtTime?: number | undefined;
 };
@@ -95,9 +85,9 @@ export default async function Page() {
   const upVotesWeight = 0.5;
   const updatedAtWeight = 0.05;
 
-  const maxSaves = Math.max(...fileData.map((file) => file.saves));
+  const maxSaves = Math.max(...fileData.map((file) => file.saves.length));
   const maxViews = Math.max(...fileData.map((file) => file.views));
-  const maxUpvotes = Math.max(...fileData.map((file) => file.upvotes));
+  const maxUpvotes = Math.max(...fileData.map((file) => file.upvotes.length));
   const maxUpdatedAtTime = Math.max(
     ...fileData.map((file) => file.updatedAtTime ?? 0)
   );
@@ -105,9 +95,9 @@ export default async function Page() {
   //   calculate popularity of the notes by mapping through the fileData
   fileData.map((file, index) => {
     file.popularity =
-      (file.saves / maxSaves) * savesWeight +
+      (file.saves.length / maxSaves) * savesWeight +
       (file.views / maxViews) * viewsWeight +
-      (file.upvotes / maxUpvotes) * upVotesWeight +
+      (file.upvotes.length / maxUpvotes) * upVotesWeight +
       ((file.updatedAtTime ?? 0) / maxUpdatedAtTime) * updatedAtWeight;
   });
 

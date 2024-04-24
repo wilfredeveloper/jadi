@@ -3,3 +3,7 @@
     border: none;
     background-color: transparent;
 }
+.wrapper {
+    border-radius: .35rem;
+    margin-inline: 1rem;
+}

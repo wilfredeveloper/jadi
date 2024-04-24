@@ -19,25 +19,25 @@ import styles from "./styles.module.css";
 import { uploadNote } from "@/src/app/actions/uploadActions";
 import { useToast } from "@/components/ui/use-toast";
 import { SpinnerRoundFilled } from "spinners-react";
-import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
+import { useRouter } from 'next/navigation'
 
 const initialState = {
   message: "",
 };
 
 function SubmitButton() {
+  
   const { pending } = useFormStatus();
   const { toast } = useToast();
 
-  useEffect(() => {
-    if (pending) {
-      toast({
-        title: "🎉 Uploading Note",
-        description: "Your note will be uploaded in a jiffy buddy",
-      });
-    }
-  }, [pending, toast]);
+  // const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault();
+  //   toast({
+  //     title: "🎉 Uploading Note",
+  //     description: "Your note will be uploaded in a jiffy buddy",
+  //   });
+  // };
 
   return (
     <Button type="submit" size={"sm"}>

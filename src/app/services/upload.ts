@@ -48,10 +48,10 @@ const PostFile = async (
       Tags: tagsArray, 
       category: category,
       description: description,
-      upvotes: 0, // Initialize upvotes with 0
+      upvotes: [], // Initialize upvotes with 0
       views: 0, // Initialize views with 0
       popularity: 0, // Initialize popularity with 0
-      saves: 0, // Initialize saves with 0
+      saves: [], // Initialize saves with 0
       likes: [],
     });
     return
