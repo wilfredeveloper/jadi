@@ -7,13 +7,33 @@ import {
   getDoc,
 } from "firebase/firestore/lite";
 
+import chalk from "chalk";
+import { updatePopularity } from "../services/updatePopularity";
+interface MaxValues {
+  maxSaves: number;
+  maxViews: number;
+  maxUpvotes: number;
+  maxLikes: number;
+  maxUpdatedAtTime: number;
+}
 interface fileProps {
   userId: string;
   fileId: string;
+  maxValues: MaxValues;
+}
+
+interface FileData {
+  saves: string[];
+  views: number;
+  upvotes: string[];
+  popularity: number;
+  likes: string[];
+  noteTitle: string;
+  updatedAtTime: number;
 }
 
 const likeFile = async (
-  { userId, fileId }: fileProps,
+  { userId, fileId, maxValues }: fileProps,
   callback: (hasLiked: boolean) => void
 ) => {
   const db = firestoreClientDB;
@@ -28,25 +48,63 @@ const likeFile = async (
       throw "Document does not exist!";
     }
 
+    const fileData = fileDoc.data() as FileData;
     const likes = fileDoc.data()?.likes;
+    console.log(chalk.greenBright("\nLikes Before Update: ", likes));
 
     // if user hasn't liked the document yet, add their ID to the likes array
     if (likes && !likes.includes(userId)) {
       likes.push(userId);
       await updateDoc(fileRef, { likes });
+      console.log(chalk.greenBright("\nLikes After Update: ", likes));
+
+      // Recalculate maxLikes
+      maxValues.maxLikes = Math.max(maxValues.maxLikes, likes.length);
+      
       callback(true); // Call the callback function with true
     } else {
       likes.splice(likes.indexOf(userId), 1);
       await updateDoc(fileRef, { likes });
+      console.log(chalk.greenBright("\nLikes After Update: ", likes));
+      maxValues.maxLikes = Math.max(maxValues.maxLikes, likes.length);
       callback(false); // Call the callback function with false
     }
+
+    console.log(
+      chalk.yellowBright(
+        "\n",
+        fileData.noteTitle,
+        "Popularity Before Update: ",
+        fileData.popularity.toFixed(4)
+      )
+    );
+
+    updatePopularity(
+      fileData,
+      maxValues.maxSaves,
+      maxValues.maxViews,
+      maxValues.maxUpvotes,
+      maxValues.maxLikes,
+      maxValues.maxUpdatedAtTime
+    );
+    await updateDoc(fileRef, { popularity: fileData.popularity });
+
+    console.log(
+      chalk.greenBright(
+        "\n",
+        fileData.noteTitle,
+        "Popularity After Update: ",
+        fileData.popularity.toFixed(4)
+      )
+    );
   } catch (error) {
     console.log("\n --> Error Liking file: ", error);
   }
 };
+
 const UpvoteFile = async (
-  { userId, fileId }: fileProps,
-  callback: (hasLiked: boolean) => void
+  { userId, fileId, maxValues }: fileProps,
+  callback: (hasUpvoted: boolean) => void
 ) => {
   const db = firestoreClientDB;
 
@@ -60,20 +118,57 @@ const UpvoteFile = async (
       throw "Document does not exist!";
     }
 
+    const fileData = fileDoc.data() as FileData;
     const upvotes = fileDoc.data()?.upvotes;
+    console.log(chalk.greenBright("\nUpvotes Before Update: ", upvotes));
 
-    // if user hasn't liked the document yet, add their ID to the likes array
+    // if user hasn't upvoted the document yet, add their ID to the upvotes array
     if (upvotes && !upvotes.includes(userId)) {
       upvotes.push(userId);
       await updateDoc(fileRef, { upvotes });
+      console.log(chalk.greenBright("\nUpvotes After Update: ", upvotes));
+
+      // Recalculate maxUpvotes
+      maxValues.maxUpvotes = Math.max(maxValues.maxUpvotes, upvotes.length);
+      
       callback(true); // Call the callback function with true
     } else {
       upvotes.splice(upvotes.indexOf(userId), 1);
       await updateDoc(fileRef, { upvotes });
+      console.log(chalk.greenBright("\nUpvotes After Update: ", upvotes));
+      maxValues.maxUpvotes = Math.max(maxValues.maxUpvotes, upvotes.length);
       callback(false); // Call the callback function with false
     }
+
+    console.log(
+      chalk.yellowBright(
+        "\n",
+        fileData.noteTitle,
+        "Popularity Before Update: ",
+        fileData.popularity.toFixed(4)
+      )
+    );
+
+    updatePopularity(
+      fileData,
+      maxValues.maxSaves,
+      maxValues.maxViews,
+      maxValues.maxUpvotes,
+      maxValues.maxLikes,
+      maxValues.maxUpdatedAtTime
+    );
+    await updateDoc(fileRef, { popularity: fileData.popularity });
+
+    console.log(
+      chalk.greenBright(
+        "\n",
+        fileData.noteTitle,
+        "Popularity After Update: ",
+        fileData.popularity.toFixed(4)
+      )
+    );
   } catch (error) {
-    console.log("\n --> Error Liking file: ", error);
+    console.log("\n --> Error Upvoting file: ", error);
   }
 };
 

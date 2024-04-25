@@ -7,16 +7,26 @@ import { motion, AnimatePresence } from "framer-motion";
 import styles from "./actionButtonStyles.module.css";
 import AuthDialog from "./auth-dialog";
 
+interface MaxValues {
+  maxSaves: number;
+  maxViews: number;
+  maxUpvotes: number;
+  maxLikes: number;
+  maxUpdatedAtTime: number;
+}
+
 interface LikeButtonProps {
   hasLiked: boolean;
   likeCount: number;
   userId: string;
+  maxValues: MaxValues;
   fileId: string; // Function that will be called when the button is clicked
 }
 interface UpvoteButtonProps {
   hasUpvoted: boolean;
   upvoteCount: number;
   userId: string;
+  maxValues: MaxValues;
   fileId: string; // Function that will be called when the button is clicked
 }
 
@@ -25,6 +35,7 @@ function LikeButton({
   fileId,
   hasLiked: initialHasLiked,
   likeCount: initialLikeCount,
+  maxValues
 }: LikeButtonProps) {
   const [hasLiked, setHasLiked] = useState(initialHasLiked);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
@@ -37,8 +48,7 @@ function LikeButton({
     setHasLiked(!hasLiked);
     setLikeCount(hasLiked ? likeCount - 1 : likeCount + 1);
     try {
-      console.log("user ID: ", userId, "\n", "file ID: ", fileId);
-      await likeFile({ userId, fileId }, setHasLiked);
+      await likeFile({ userId, fileId, maxValues }, setHasLiked);
     } catch (error) {
       console.error("Error liking file:", error);
     }
@@ -84,6 +94,7 @@ function UpvoteButton({
   fileId,
   hasUpvoted: initialHasLiked,
   upvoteCount: initialLikeCount,
+  maxValues
 }: UpvoteButtonProps) {
   const [hasUpvoted, setHasUpvoted] = useState(initialHasLiked);
   const [upvoteCount, setUpvoteCount] = useState(initialLikeCount);
@@ -96,8 +107,7 @@ function UpvoteButton({
     setHasUpvoted(!hasUpvoted);
     setUpvoteCount(hasUpvoted ? upvoteCount - 1 : upvoteCount + 1);
     try {
-      console.log("user ID: ", userId, "\n", "file ID: ", fileId);
-      await UpvoteFile({ userId, fileId }, setHasUpvoted);
+      await UpvoteFile({ userId, fileId, maxValues }, setHasUpvoted);
     } catch (error) {
       console.error("Error liking file:", error);
     }

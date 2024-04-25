@@ -82,9 +82,11 @@ export default async function Page() {
 
   const savesWeight = 0.3;
   const viewsWeight = 0.15;
-  const upVotesWeight = 0.5;
+  const likesWeight = 0.2;
+  const upVotesWeight = 0.3;
   const updatedAtWeight = 0.05;
 
+  const maxLikes = Math.max(...fileData.map((file) => file.likes.length));
   const maxSaves = Math.max(...fileData.map((file) => file.saves.length));
   const maxViews = Math.max(...fileData.map((file) => file.views));
   const maxUpvotes = Math.max(...fileData.map((file) => file.upvotes.length));
@@ -92,13 +94,22 @@ export default async function Page() {
     ...fileData.map((file) => file.updatedAtTime ?? 0)
   );
 
+  const NormalizedVariables = {
+    maxLikes,
+    maxSaves,
+    maxViews,
+    maxUpvotes,
+    maxUpdatedAtTime,
+  };
+
   //   calculate popularity of the notes by mapping through the fileData
   fileData.map((file, index) => {
     file.popularity =
-      (file.saves.length / maxSaves) * savesWeight +
-      (file.views / maxViews) * viewsWeight +
-      (file.upvotes.length / maxUpvotes) * upVotesWeight +
-      ((file.updatedAtTime ?? 0) / maxUpdatedAtTime) * updatedAtWeight;
+      (file.saves.length / (maxSaves || 1)) * savesWeight +
+      (file.views / (maxViews || 1)) * viewsWeight +
+      (file.upvotes.length / (maxUpvotes || 1)) * upVotesWeight +
+      ((file.updatedAtTime ?? 0) / (maxUpdatedAtTime || 1)) * updatedAtWeight +
+      (file.likes.length / (maxLikes || 1)) * likesWeight;
   });
 
   // sort by popularity
@@ -106,19 +117,31 @@ export default async function Page() {
     return b.popularity - a.popularity;
   });
 
-  const trendingThreshold = 0.7;
+  const trendingThreshold = 0.6;
 
+  // map over filedata end display popularity of each note
+  fileData.map((file, index) => {
+    console.log(
+      chalk.greenBright(
+        `\n
+        Note Title: ${file.noteTitle}
+        Popularity: ${file.popularity}
+        `
+      )
+    );
+  });
   const userData = await fetchBasicUserData();
   const userId = userData?.id || "";
 
   return (
     <main className={`${styles.main}`}>
       <NotesTimeline
-          className={`${styles.notes_timeline_component}`}
-          userId={userId}
-          trendingThreshold={trendingThreshold}
-          fileData={fileData}
-        />
+        className={`${styles.notes_timeline_component}`}
+        userId={userId}
+        trendingThreshold={trendingThreshold}
+        fileData={fileData}
+        normalizedVariables={NormalizedVariables}
+      />
 
       <div
         className={`${styles.ads_section} flex flex-col justify-between items-start align-top`}

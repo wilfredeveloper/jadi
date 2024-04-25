@@ -10,6 +10,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import DownloadButton from "@/components/ui/download-button";
+import PreviewButton from "@/components/ui/file-preview-dialog";
 
 interface FileData {
     id: string;
@@ -33,14 +34,22 @@ interface FileData {
     updatedAtTime?: number | undefined;
 }
 
+interface MaxValues {
+  maxSaves: number;
+  maxViews: number;
+  maxUpvotes: number;
+  maxUpdatedAtTime: number;
+}
+
 interface TimelineProps {
   fileData: Array<FileData>;
   trendingThreshold: number;
   userId: string;
   className?: string;
+  normalizedVariables: MaxValues;
 }
 
-export default function NotesTimeline({ fileData, trendingThreshold, userId, className }: TimelineProps) {
+export default function NotesTimeline({ fileData, trendingThreshold, userId, className, normalizedVariables }: TimelineProps) {
   return (
     <div className={`${styles.notes_timeline} ${className}`}>
       {fileData.map((file, index) => (
@@ -71,7 +80,7 @@ export default function NotesTimeline({ fileData, trendingThreshold, userId, cla
                 <FileIcon className="w-4 h-4 mr-1.5 flex-shrink-0" />
                 <span>
                   <span className="font-bold text-sm">
-                    {(file.size / 1048576).toFixed(2)} MB
+                  {(file.size / 1048576).toFixed(2)} MB
                   </span>
                 </span>
               </div>
@@ -99,18 +108,21 @@ export default function NotesTimeline({ fileData, trendingThreshold, userId, cla
             </div>
           </CardContent>
           <CardFooter className={``}>
+            <PreviewButton fileData={file}/>
             <DownloadButton url={file.url}/>
             <LikeButton
               userId={userId}
               fileId={file.id}
               hasLiked={file.likes?.includes(userId)}
               likeCount={file.likes?.length}
+              maxValues={normalizedVariables}
             />
             <UpvoteButton
               userId={userId}
               fileId={file.id}
               hasUpvoted={file.upvotes?.includes(userId)}
               upvoteCount={file.upvotes?.length}
+              maxValues={normalizedVariables}
             />
           </CardFooter>
         </Card>
