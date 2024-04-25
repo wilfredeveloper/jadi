@@ -38,6 +38,7 @@ interface MaxValues {
   maxSaves: number;
   maxViews: number;
   maxUpvotes: number;
+  maxLikes: number;
   maxUpdatedAtTime: number;
 }
 
