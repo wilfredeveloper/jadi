@@ -1,6 +1,5 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
-import React from "react";
+import { motion, useMotionValue } from "framer-motion";
 
 interface ShinyButtonProps {
   children: React.ReactNode;
@@ -8,11 +7,12 @@ interface ShinyButtonProps {
 }
 
 export default function ShinyButton({children, className = ""}: ShinyButtonProps) {
+  const x = useMotionValue("100%"); // Initial value
+
   return (
     <motion.button
       className={`px-6 py-3 rounded-md relative bg-zinc-800 radial-gradient ${className}`}
-      initial={{ "--x": "100%", scale: 1 }}
-      animate={{ "--x": "-100%" }}
+      style={{ "--x": x } as any} // Use the style prop to animate the custom CSS property
       whileTap={{ scale: 0.97 }}
       transition={{
         repeat: Infinity,
@@ -24,11 +24,12 @@ export default function ShinyButton({children, className = ""}: ShinyButtonProps
         mass: 2,
         scale: {
           type: "spring",
-          stiffness1: 10,
+          stiffness: 10,
           damping: 5,
           mass: 0.1,
-        }
+        },
       }}
+      onClick={() => x.set(x.get() === "100%" ? "-100%" : "100%")} // Toggle between "100%" and "-100%" when the button is clicked
     >
       <span
         className={`text-neutral-100 tracking-wide font-light h-full w-full block relative linear-mask`}
