@@ -5,3 +5,7 @@
 .links_wrapper {
     height: 50%;
 }
+
+.shiny_button {
+    padding: .35rem .65rem;
+}
