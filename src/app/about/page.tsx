@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "./homepage.module.css"
 import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import { Button } from "@/components/ui/button";
+import ShinyButton from "@/components/ui/shiny-button";
 // import { db } from "@/src/db";
 // import { UserProfiles } from "../db/schema";
 

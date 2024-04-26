@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import chalk from "chalk";
 import { fetchBasicUserData } from "./utils/userUtils";
 import NotesTimeline from "@/components/component/NotesTimeline/NotesTimeline";
+import { createCollection, getCollection } from "./utils/firestoreUtils";
 
 type FileData = {
   id: string;
