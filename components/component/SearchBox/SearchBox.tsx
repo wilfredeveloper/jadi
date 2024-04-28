@@ -1,12 +1,15 @@
 "use client";
 import styles from "./SearchBox.module.css";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
-
+import { Search } from "@/src/app/actions/SearchAction";
+import { useFormState, useFormStatus } from "react-dom";
 interface SearchBoxProps {
   className: string;
 }
+
+const initialState = {
+  message: "",
+};
 
 export default function SearchBox({ className }: SearchBoxProps) {
   const [isFocused, setIsFocused] = useState(false);
@@ -31,8 +34,10 @@ export default function SearchBox({ className }: SearchBoxProps) {
     setIsFocused(false);
   };
 
+  const [state, formAction] = useFormState(Search, initialState);
+
   return (
-    <div
+    <form action={formAction}
       className={`${styles.search_box_wrapper} ${className} flex items-center justify-between dark:bg-slate-400 dark:text-gray-950 px-6 py-4 rounded-xl`}
     >
       <input
@@ -40,22 +45,32 @@ export default function SearchBox({ className }: SearchBoxProps) {
         id="search"
         placeholder="Search for files..."
         type="text"
-        name="search"
+        name="search-term"
         value={inputValue}
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
         autoComplete="off"
       />
-      <button
-        type="submit"
+      {/* <button
         onClick={isFocused && inputValue ? handleClear : undefined}
       >
-        {isFocused && inputValue ? <CloseIcon /> : <SearchIcon />}
-      </button>
-    </div>
+        {isFocused && inputValue ? <CloseIcon /> : <SearchButton />}
+      </button> */}
+      <SearchButton />
+    </form>
   );
 }
+
+function SearchButton(props: any) {
+  return (
+    <button
+        type="submit"
+      >
+       <SearchIcon />
+      </button>
+  )
+} 
 
 function SearchIcon(props: any) {
   return (
