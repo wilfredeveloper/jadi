@@ -1,6 +1,7 @@
 // const fs = require("fs");
 import { Client } from "../config/sanity";
 import { connectFirestore } from "../config/firestore";
+import { saveToAlgolia } from "./algoliaService"
 
 const postToFirestore = async (data: any) => {
   const db = await connectFirestore();
@@ -38,7 +39,7 @@ const PostFile = async (
     const data = {
       url: sanityResponse.url,
       size: sanityResponse?.size,
-      name: sanityResponse?.originalFilename,
+      name: sanityResponse?.originalFilename || null,
       mimeType: sanityResponse?.mimeType,
       extension: sanityResponse?.extension,
       cms_id: sanityResponse?._id,
@@ -56,6 +57,9 @@ const PostFile = async (
     };
 
     await postToFirestore(data);
+
+    // Save to Algolia
+    await saveToAlgolia(data);
     return;
   } catch (error) {
     console.log(error);
