@@ -5,8 +5,8 @@ import { connectFirestore } from "../config/firestore";
 const postToFirestore = async (data: any) => {
   const db = await connectFirestore();
 
-  if(!db) return console.log("Firestore not connected");
-  
+  if (!db) return console.log("Firestore not connected");
+
   try {
     const docRef = await db.collection("files").doc();
     await docRef.set(data);
@@ -35,7 +35,7 @@ const PostFile = async (
 
     const tagsArray = tags.split(",").map((tag) => tag.trim());
 
-    await postToFirestore({
+    const data = {
       url: sanityResponse.url,
       size: sanityResponse?.size,
       name: sanityResponse?.originalFilename,
@@ -44,8 +44,8 @@ const PostFile = async (
       cms_id: sanityResponse?._id,
       createdAt: sanityResponse?._createdAt,
       updatedAt: sanityResponse?._updatedAt,
-      noteTitle: title, 
-      Tags: tagsArray, 
+      noteTitle: title,
+      Tags: tagsArray,
       category: category,
       description: description,
       upvotes: [], // Initialize upvotes with 0
@@ -53,8 +53,10 @@ const PostFile = async (
       popularity: 0, // Initialize popularity with 0
       saves: [], // Initialize saves with 0
       likes: [],
-    });
-    return
+    };
+
+    await postToFirestore(data);
+    return;
   } catch (error) {
     console.log(error);
   }
