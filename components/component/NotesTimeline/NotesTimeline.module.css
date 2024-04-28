@@ -4,7 +4,7 @@
   border: none;
   background-color: transparent;
   border-bottom: 1px solid #5a5a5a65;
-  padding-inline: 2rem;
+  /* padding-inline: 2rem; */
   transition: all 0.05s ease-in;
 }
 .card:hover {
@@ -30,7 +30,4 @@
   border-radius: .5rem;
   color: #000;
   font-weight: 600;
-}
-.file_description {
-  /* color: #adadad; */
 }

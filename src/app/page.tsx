@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 import chalk from "chalk";
 import { fetchBasicUserData } from "./utils/userUtils";
 import NotesTimeline from "@/components/component/NotesTimeline/NotesTimeline";
-import { createCollection, getCollection } from "./utils/firestoreUtils";
+import SearchBox from "@/components/component/SearchBox/SearchBox";
 
 type FileData = {
   id: string;
@@ -120,46 +120,25 @@ export default async function Page() {
 
   const trendingThreshold = 0.6;
 
-  // map over filedata end display popularity of each note
-  fileData.map((file, index) => {
-    console.log(
-      chalk.greenBright(
-        `\n
-        Note Title: ${file.noteTitle}
-        Popularity: ${file.popularity}
-        `
-      )
-    );
-  });
   const userData = await fetchBasicUserData();
   const userId = userData?.id || "";
 
   return (
     <main className={`${styles.main}`}>
-      <NotesTimeline
-        className={`${styles.notes_timeline_component}`}
-        userId={userId}
-        trendingThreshold={trendingThreshold}
-        fileData={fileData}
-        normalizedVariables={NormalizedVariables}
-      />
-
-      <div
-        className={`${styles.ads_section} flex flex-col justify-between items-start align-top`}
-      >
-        <div className={`${styles.search_box_wrapper}`}>
-          <input
-            className={`${styles.search_box}`}
-            type="text"
-            id="search"
-            name="search"
-          />
-          <Button>
-            <label className={`${styles.search_label}`} htmlFor="search">
-              Go
-            </label>
-          </Button>
+      <div className={`${styles.main_content}`}>
+        <div className={`${styles.main_content_nav}`}>
+          <SearchBox className={`${styles.search_box}`} />
         </div>
+        <NotesTimeline
+          className={`${styles.notes_timeline_component}`}
+          userId={userId}
+          trendingThreshold={trendingThreshold}
+          fileData={fileData}
+          normalizedVariables={NormalizedVariables}
+        />
+      </div>
+
+      <div className={`${styles.ads_section}`}>
         <p>Ads coming soon</p>
       </div>
     </main>

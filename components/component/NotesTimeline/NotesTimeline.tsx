@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import DownloadButton from "@/components/ui/download-button";
 import PreviewButton from "@/components/ui/file-preview-dialog";
+import SearchBox from "../SearchBox/SearchBox";
 
 interface FileData {
     id: string;
