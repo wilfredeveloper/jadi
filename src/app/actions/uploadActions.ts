@@ -2,9 +2,11 @@
 import { PostFile } from "../services/upload";
 
 export async function uploadNote(
-  prevState: {
-    message: string;
-  } | undefined,
+  prevState:
+    | {
+        message: string;
+      }
+    | undefined,
   formData: FormData
 ) {
   const file = formData.get("file") as File;
@@ -13,7 +15,7 @@ export async function uploadNote(
   const tags = formData.get("tags") as string;
   const category = formData.get("category") as string;
 
-  console.log({ file, title, description, tags, category })
+  console.log({ file, title, description, tags, category });
 
   if (!file) {
     console.log("\n 🚨---> [ from api/upload/route.ts ] No files received.\n");
@@ -26,7 +28,6 @@ export async function uploadNote(
   }
 
   try {
-    
     console.log("\n 🪵--> Trying to use PostFile function\n");
     await PostFile(file, tags, description, category, title);
 

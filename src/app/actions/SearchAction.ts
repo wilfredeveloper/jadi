@@ -1,12 +1,9 @@
+"use server";
 import { collection, query, where, getDocs } from "firebase/firestore/lite";
 import { firestoreClientDB } from "../config/firestore-client";
 
-export async function Search(
-  prevState:
-    | {
-        message: string;
-      }
-    | undefined,
+export async function searchNote(
+  prevState: void | { message: string },
   formData: FormData
 ) {
   const search = formData.get("search-term") as string;
@@ -28,7 +25,10 @@ export async function Search(
     querySnapshot.forEach((doc) => {
       console.log(doc.id, " => ", doc.data());
     });
+
+    return { message: "Search was successful" };
   } catch (error) {
     console.error("Error getting documents: ", error);
+    return { message: "Search failed" };
   }
 }

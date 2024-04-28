@@ -1,7 +1,7 @@
 "use client";
 import styles from "./SearchBox.module.css";
 import React, { useState } from "react";
-import { Search } from "@/src/app/actions/SearchAction";
+import { searchNote } from "@/src/app/actions/SearchAction";
 import { useFormState, useFormStatus } from "react-dom";
 interface SearchBoxProps {
   className: string;
@@ -34,7 +34,7 @@ export default function SearchBox({ className }: SearchBoxProps) {
     setIsFocused(false);
   };
 
-  const [state, formAction] = useFormState(Search, initialState);
+  const [state, formAction] = useFormState(searchNote, initialState);
 
   return (
     <form action={formAction}
@@ -58,6 +58,7 @@ export default function SearchBox({ className }: SearchBoxProps) {
         {isFocused && inputValue ? <CloseIcon /> : <SearchButton />}
       </button> */}
       <SearchButton />
+      {state?.message && <p>{state.message}</p>}
     </form>
   );
 }
