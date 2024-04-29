@@ -10,7 +10,7 @@ const index = client.initIndex("notes_files");
 // Search the index and print the results
 // Perform a search
 index
-  .search("Qualitative Research")
+  .search("tsts")
   .then(({ hits }) => {
     hits.forEach((hit) => {
       console.log(`Title: ${hit.noteTitle}`);

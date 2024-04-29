@@ -1,6 +1,6 @@
 "use client";
 import styles from "./SearchBox.module.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { searchNote } from "@/src/app/actions/SearchAction";
 import { useFormState, useFormStatus } from "react-dom";
 interface SearchBoxProps {
@@ -14,6 +14,7 @@ const initialState = {
 export default function SearchBox({ className }: SearchBoxProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -36,8 +37,37 @@ export default function SearchBox({ className }: SearchBoxProps) {
 
   const [state, formAction] = useFormState(searchNote, initialState);
 
+  useEffect(() => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    if (inputValue !== '') {
+      setTimer(setTimeout(() => {
+        const formData = new FormData();
+        formData.append('search-term', inputValue);
+        formAction(formData);
+      }, 1000));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputValue, formAction]);
+
+  function SearchButton(props: any) {
+    return (
+      isFocused ? (
+        <button onClick={handleClear}>
+          <CloseIcon />
+        </button>
+      ) : (
+        <button type="submit">
+          <SearchIcon />
+        </button>
+      )
+    )
+  }
+
   return (
-    <form action={formAction}
+    <form
       className={`${styles.search_box_wrapper} ${className} flex items-center justify-between dark:bg-slate-400 dark:text-gray-950 px-6 py-4 rounded-xl`}
     >
       <input
@@ -52,26 +82,10 @@ export default function SearchBox({ className }: SearchBoxProps) {
         onChange={handleChange}
         autoComplete="off"
       />
-      {/* <button
-        onClick={isFocused && inputValue ? handleClear : undefined}
-      >
-        {isFocused && inputValue ? <CloseIcon /> : <SearchButton />}
-      </button> */}
       <SearchButton />
-      {state?.message && <p>{state.message}</p>}
     </form>
   );
 }
-
-function SearchButton(props: any) {
-  return (
-    <button
-        type="submit"
-      >
-       <SearchIcon />
-      </button>
-  )
-} 
 
 function SearchIcon(props: any) {
   return (

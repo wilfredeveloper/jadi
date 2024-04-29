@@ -127,7 +127,6 @@ export default async function Page() {
     <main className={`${styles.main}`}>
       <div className={`${styles.main_content}`}>
         <div className={`${styles.main_content_nav}`}>
-          <SearchBox className={`${styles.search_box}`} />
         </div>
         <NotesTimeline
           className={`${styles.notes_timeline_component}`}

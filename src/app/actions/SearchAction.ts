@@ -1,6 +1,22 @@
 "use server";
-import { collection, query, where, getDocs } from "firebase/firestore/lite";
-import { firestoreClientDB } from "../config/firestore-client";
+const algoliasearch = require("algoliasearch");
+import chalk from "chalk";
+
+interface Hit {
+  noteTitle: string;
+  description: string;
+  url: string;
+  Tags: string[];
+  popularity: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Connect and authenticate with your Algolia app
+const client = algoliasearch("5AM91AHDV1", "ff4bdb7ea8967af46003787e66cfd6f3");
+
+// Create a new index and add a record
+const index = client.initIndex("notes_files");
 
 export async function searchNote(
   prevState: void | { message: string },
@@ -8,25 +24,25 @@ export async function searchNote(
 ) {
   const search = formData.get("search-term") as string;
   console.log({ search });
-  const db = firestoreClientDB;
-
-  if (!db) return console.log("Firestore not connected");
 
   try {
-    const filesCollection = collection(firestoreClientDB, "files");
+    // Search the index and print the results
+    // Perform a search
+    const { hits } = await index.search(search);
 
-    // Define a query to find files that match the search term
-    const q = query(filesCollection, where("noteTitle", "==", search));
+    const data = hits.map((hit: Hit) => ({
+      title: hit.noteTitle,
+      description: hit.description,
+      url: hit.url,
+      tags: hit.Tags,
+      popularity: hit.popularity,
+      createdAt: hit.createdAt,
+      updatedAt: hit.updatedAt,
+    }));
 
-    // Execute the query
-    const querySnapshot = await getDocs(q);
+    console.log(data);
 
-    // Log the results
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-    });
-
-    return { message: "Search was successful" };
+    return { message: "Search was successful", data };
   } catch (error) {
     console.error("Error getting documents: ", error);
     return { message: "Search failed" };
