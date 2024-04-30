@@ -3,13 +3,39 @@ import styles from "./SearchBox.module.css";
 import React, { useState, useEffect } from "react";
 import { searchNote } from "@/src/app/actions/SearchAction";
 import { useFormState, useFormStatus } from "react-dom";
+import {
+  InstantSearch,
+  SearchBox as AlgoliaSearchBox,
+  Hits,
+} from "react-instantsearch";
+import algoliasearch from "algoliasearch/lite";
 interface SearchBoxProps {
   className: string;
+}
+
+interface Hit {
+  noteTitle: string;
+  description: string;
+  url: string;
+  Tags: string[];
+  popularity: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface HitComponentProps {
+  hit: Hit;
 }
 
 const initialState = {
   message: "",
 };
+
+const client = algoliasearch("5AM91AHDV1", "ff4bdb7ea8967af46003787e66cfd6f3");
+
+function Hit({ hit }: HitComponentProps) {
+  return JSON.stringify(hit, null, 2);
+}
 
 export default function SearchBox({ className }: SearchBoxProps) {
   const [isFocused, setIsFocused] = useState(false);
@@ -42,28 +68,28 @@ export default function SearchBox({ className }: SearchBoxProps) {
       clearTimeout(timer);
     }
 
-    if (inputValue !== '') {
-      setTimer(setTimeout(() => {
-        const formData = new FormData();
-        formData.append('search-term', inputValue);
-        formAction(formData);
-      }, 1000));
+    if (inputValue !== "") {
+      setTimer(
+        setTimeout(() => {
+          const formData = new FormData();
+          formData.append("search-term", inputValue);
+          formAction(formData);
+        }, 1000)
+      );
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue, formAction]);
 
   function SearchButton(props: any) {
-    return (
-      isFocused ? (
-        <button onClick={handleClear}>
-          <CloseIcon />
-        </button>
-      ) : (
-        <button type="submit">
-          <SearchIcon />
-        </button>
-      )
-    )
+    return isFocused ? (
+      <button onClick={handleClear}>
+        <CloseIcon />
+      </button>
+    ) : (
+      <button type="submit">
+        <SearchIcon />
+      </button>
+    );
   }
 
   return (
@@ -114,3 +140,6 @@ function CloseIcon(props: any) {
     </svg>
   );
 }
+
+// TODO 
+// 1. Try to convert the Hits component to use the note's Timeline as the hit component
