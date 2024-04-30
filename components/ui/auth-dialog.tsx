@@ -48,7 +48,7 @@ export default function AuthDialog({
             </Button>
           </LoginLink>
 
-          <RegisterLink postLoginRedirectURL={`${pathname}`}>
+          <RegisterLink postLoginRedirectURL={`/onboarding`}>
             <Button size={"sm"} className="mx-2 auth_btn">
               Create Account
             </Button>
