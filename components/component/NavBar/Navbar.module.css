@@ -1,7 +1,7 @@
 .navbar {
     border-right: 1px solid #ffffff2f;
-    background-color: rgba(255, 255, 255, 0.048);
-    backdrop-filter: blur(10px);
+    /* background-color: rgba(255, 255, 255, 0.048); */
+    /* backdrop-filter: blur(10px); */
     padding: 2rem 1.5rem;
     display: flex;
     justify-content: center;
@@ -12,6 +12,10 @@
     top: 0;
     height: 100vh;
     width: 20%;
+    transition: all .25s ease;
+}
+.navbar_closed {
+    transform: translateX(-100%);
 }
 
 .navbar::after {
@@ -109,6 +113,23 @@
     border-radius: 2rem;
 }
 
+.toggle_btn {
+    position: absolute;
+    right: -1rem;
+    top: 2rem;
+}
+.toggle_icon {
+    background-color: #000;
+    transition: all .2s ease-in-out;
+}
+.toggle_icon:hover {
+    fill: #a7ffbd;
+}
+
+.navbar_closed .toggle_btn {
+    right: -3rem;
+}
+
 @media screen and (max-width: 768px) {
     .auth_button {
         position:relative;
@@ -118,6 +139,7 @@
         flex-direction: column;
         justify-content: space-evenly;
         align-items: center;
+        width: 100%;
     }
     .logo_tagline {
         margin: 1rem 0;

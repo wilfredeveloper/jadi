@@ -1,0 +1,16 @@
+.search_box {
+  border: none;
+  outline: none;
+  border-radius: 1rem;
+}
+.search_box:focus {
+  border: none;
+  outline: none;
+  
+}
+.search_label {
+  cursor: pointer;
+}
+.search_box_wrapper {
+  width: 20%;
+}
