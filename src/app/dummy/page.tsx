@@ -1,4 +1,4 @@
-import CustomSearchBox from "@/components/component/SearchBox/SearchBox";
+import SearchBox from "@/components/component/SearchBox/SearchBox";
 import Logo from "@/components/ui/logo";
 
 export default async function Home() {
@@ -6,7 +6,7 @@ export default async function Home() {
     <main className={`loader-container`}>
       
       
-      <CustomSearchBox  />
+      <SearchBox />
     </main>
   );
 }

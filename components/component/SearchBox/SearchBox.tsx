@@ -10,7 +10,7 @@ import {
 } from "react-instantsearch";
 import algoliasearch from "algoliasearch/lite";
 interface SearchBoxProps {
-  className: string;
+  className?: string;
 }
 
 interface Hit {
