@@ -6,16 +6,17 @@ import styles from "./actionButtonStyles.module.css";
 
 interface DownloadButtonProps {
   url: string;
+  className?: string;
 }
 
 // https://cdn.sanity.io/files/cvu4lkrj/production/6bdb8ae4d4a0bceb911a541e50d3766005972710.pptx
 
-export default function DownloadButton({ url }: DownloadButtonProps) {
+export default function DownloadButton({ url, className }: DownloadButtonProps) {
   return (
     <Button
       size={"sm"}
       variant={"outline"}
-      className={`${styles.btn}`}
+      className={`${styles.btn} ${className}`}
       onContextMenu={(e) => {
         e.preventDefault();
       }}

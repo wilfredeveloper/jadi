@@ -14,7 +14,7 @@ import { useState } from "react";
 export default function Component() {
   const pathname = usePathname();
   const isdashboard = pathname === "/dashboard";
-  const [isNavClosed, setisNavClosed] = useState(true);
+  const [isNavClosed, setisNavClosed] = useState(false);
 
   return (
     <aside className={`${styles.navbar} ${isNavClosed && `${styles.navbar_closed} full-width`}`}>

@@ -40,8 +40,6 @@ export async function searchNote(
       updatedAt: hit.updatedAt,
     }));
 
-    console.log(data);
-
     return { message: "Search was successful", data };
   } catch (error) {
     console.error("Error getting documents: ", error);
