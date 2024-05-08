@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 const algoliasearch = require("algoliasearch");
 
-const algoliaAppId = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID;
-const algoliaApiKey = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY;
+const algoliaAppId = process.env.ALGOLIA_APP_ID;
+const algoliaApiKey = process.env.ALGOLIA_API_KEY;
 // Connect and authenticate with your Algolia app
 const client = algoliasearch(algoliaAppId, algoliaApiKey);
 
