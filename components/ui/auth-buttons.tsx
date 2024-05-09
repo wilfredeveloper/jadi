@@ -14,15 +14,11 @@ interface AuthButtonsGroupProps {
 }
 
 export default function AuthButtonsGroup({ btnText }: AuthButtonsGroupProps) {
+
+  // use a try catch block to catch any errors
   const { user } = useKindeBrowserClient();
   const [isOpen, setIsOpen] = useState(false);
 
-  // if not user, create a timeout of 5 seconds to show the dialog
-  if (!user) {
-    setTimeout(() => {
-      showDialog();
-    }, 5000);
-  }
 
   function showDialog() {
     setIsOpen(true);
