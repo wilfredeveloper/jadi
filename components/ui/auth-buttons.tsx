@@ -17,6 +17,13 @@ export default function AuthButtonsGroup({ btnText }: AuthButtonsGroupProps) {
   const { user } = useKindeBrowserClient();
   const [isOpen, setIsOpen] = useState(false);
 
+  // if not user, create a timeout of 5 seconds to show the dialog
+  if (!user) {
+    setTimeout(() => {
+      showDialog();
+    }, 5000);
+  }
+
   function showDialog() {
     setIsOpen(true);
   }
