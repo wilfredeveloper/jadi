@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 interface AuthButtonsGroupProps {
   btnText?: string;
-  isUserAuthenticated: boolean;
+  isUserAuthenticated?: boolean;
 }
 
 export default function AuthButtonsGroup({
