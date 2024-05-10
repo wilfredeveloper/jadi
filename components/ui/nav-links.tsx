@@ -4,7 +4,11 @@ import styles from "./navStyles.module.css";
 import { Separator } from "./separator";
 import ShinyButton from "./shiny-button";
 
-export default function NavLinks() {
+interface NavLinksProps {
+  isUserAuthenticated: boolean;
+}
+
+export default function NavLinks({ isUserAuthenticated }: NavLinksProps) {
   return (
     <nav className={`flex align-middle justify-around flex-col ${styles.nav}`}>
       <div
@@ -51,7 +55,7 @@ export default function NavLinks() {
         </Link>
       </div>
       <div>
-        <AuthButtonsGroup />
+        <AuthButtonsGroup isUserAuthenticated={isUserAuthenticated}/>
       </div>
     </nav>
   );
