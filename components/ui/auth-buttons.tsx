@@ -1,33 +1,48 @@
 "use client";
 import { Button } from "./button";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
-
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { Avatar } from "./avatar";
-import Image from "next/image";
 import AuthDialog from "./auth-dialog";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
 
 interface AuthButtonsGroupProps {
   btnText?: string;
+  isUserAuthenticated: boolean;
 }
 
-export default function AuthButtonsGroup({ btnText }: AuthButtonsGroupProps) {
-
-  // use a try catch block to catch any errors
-  const { user } = useKindeBrowserClient();
+export default function AuthButtonsGroup({
+  btnText,
+  isUserAuthenticated,
+}: AuthButtonsGroupProps) {
   const [isOpen, setIsOpen] = useState(false);
-
+  let timerID = useRef<number | null>(null);
 
   function showDialog() {
     setIsOpen(true);
   }
 
+  const { toast } = useToast();
+
+  // If isUserAuthenticated is false, set a timeout for 5 seconds and display the AuthDialog
+  useEffect(() => {
+    if (isUserAuthenticated === false) {
+      timerID.current = window.setTimeout(() => {
+        setIsOpen(true);
+      }, 5000);
+    }
+
+    return () => {
+      if (timerID.current) {
+        clearTimeout(timerID.current);
+      }
+    };
+  }, [isUserAuthenticated, toast]);
+
   return (
     <div className={``}>
       <Dialog>
-        {user ? (
+        {isUserAuthenticated ? (
           <Button
             size={"sm"}
             className="mx-2 auth_btn bg-red-500 w-full"
