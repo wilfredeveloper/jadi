@@ -1,7 +1,7 @@
 // const fs = require("fs");
 import { Client } from "../config/sanity";
 import { connectFirestore } from "../config/firestore";
-import { saveToAlgolia } from "./algoliaService"
+import { saveToAlgolia } from "./algoliaService";
 
 const postToFirestore = async (data: any) => {
   const db = await connectFirestore();
@@ -12,7 +12,7 @@ const postToFirestore = async (data: any) => {
     const docRef = await db.collection("files").doc();
     await docRef.set(data);
     console.log("\n[FIRESTORE]🎉 Document written with ID: ", docRef.id);
-    return docRef;
+    return docRef.id;
   } catch (error) {
     console.error("\n[FIRESTORE]🚨 Error adding document: ", error);
   }
@@ -56,10 +56,36 @@ const PostFile = async (
       likes: [],
     };
 
-    await postToFirestore(data);
+    
+    const firestoreID = await postToFirestore(data);
+
+    if(!firestoreID) {
+      throw new Error("Failed to post to firestore")
+    }
+
+    const algoliaData = {
+      objectID: firestoreID,
+      cms_id: sanityResponse._id,
+      url: sanityResponse.url,
+      name: sanityResponse.originalFilename || null,
+      Tags: tagsArray,
+      category: category,
+      description: description,
+      noteTitle: title,
+      upvotes: 0,
+      views: 0,
+      popularity: 0,
+      saves: 0,
+      likes: [],
+      size: sanityResponse?.size || null,
+      mimeType: sanityResponse?.mimeType || null,
+      extension: sanityResponse?.extension || null,
+      createdAt: sanityResponse?._createdAt || null,
+      updatedAt: sanityResponse?._updatedAt || null,
+    };
 
     // Save to Algolia
-    await saveToAlgolia(data);
+    await saveToAlgolia(algoliaData);
     return;
   } catch (error) {
     console.log(error);

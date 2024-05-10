@@ -9,6 +9,7 @@ import {
 
 import chalk from "chalk";
 import { updatePopularity } from "../services/updatePopularity";
+import { updatePartialAlgoliaData } from "../services/algoliaService";
 interface MaxValues {
   maxSaves: number;
   maxViews: number;
@@ -50,6 +51,7 @@ const likeFile = async (
 
     const fileData = fileDoc.data() as FileData;
     const likes = fileDoc.data()?.likes;
+    console.log("Old likes", likes.length)
     console.log(chalk.greenBright("\nLikes Before Update: ", likes));
 
     // if user hasn't liked the document yet, add their ID to the likes array
@@ -97,6 +99,17 @@ const likeFile = async (
         fileData.popularity.toFixed(4)
       )
     );
+
+
+    const algoliaData = {
+      objectID: fileId,
+      likes: likes.length,
+      popularity: fileData.popularity,
+    }
+
+    console.log("New Likes", likes.length)
+
+    updatePartialAlgoliaData(algoliaData)
   } catch (error) {
     console.log("\n --> Error Liking file: ", error);
   }
@@ -167,6 +180,15 @@ const UpvoteFile = async (
         fileData.popularity.toFixed(4)
       )
     );
+
+    const algoliaData = {
+      objectID: fileId,
+      upvotes: upvotes.length,
+      popularity: fileData.popularity,
+    
+    }
+
+    updatePartialAlgoliaData(algoliaData)
   } catch (error) {
     console.log("\n --> Error Upvoting file: ", error);
   }
