@@ -12,7 +12,7 @@ export default async function Component() {
   const isAuthenticated = getKindeServerSession().isAuthenticated();
 
   return (
-    <aside className={`${styles.navbar} full-width`}>
+    <aside className={`${styles.navbar} full-width dark:bg-black`}>
       <div className={`${styles.logo_wrapper}`}>
         <Logo className={`${styles.logo}`} width="32" height="52" />
       </div>

@@ -15,21 +15,21 @@ export default function NavLinks({ isUserAuthenticated }: NavLinksProps) {
         className={`flex justify-between align-middle flex-col ${styles.links_wrapper}`}
       >
         <Link
-          className="flex text-xs h-2 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
+          className="flex text-xs h-2 items-center px-4 font-medium text-gray-950 dark:text-gray-400"
           href="#"
         >
           <BlogIcon />
           BLOG
         </Link>
         <Link
-          className="flex text-xs h-2 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
+          className="flex text-xs h-2 items-center px-4 font-medium text-gray-950 dark:text-gray-400"
           href="/about"
         >
           <HomeIcon />
           ABOUT
         </Link>
         <Link
-          className="flex text-xs h-2 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
+          className="flex text-xs h-2 items-center px-4 font-medium text-gray-950 dark:text-gray-400"
           href="#"
         >
           <ContactIcon />
@@ -37,14 +37,14 @@ export default function NavLinks({ isUserAuthenticated }: NavLinksProps) {
         </Link>
         <Separator className="dark:bg-gray-400 opacity-20" />
         <Link
-          className="flex text-xs h-2 items-center px-4 font-medium text-gray-300 dark:text-gray-400"
+          className="flex text-xs h-2 items-center px-4 font-medium text-gray-950 dark:text-gray-400"
           href="/upload"
         >
           <UploadIcon />
           UPLOAD
         </Link>
         <Link
-          className="flex text-xs h-2 px-4 items-center font-medium text-gray-300 dark:text-gray-400"
+          className="flex text-xs h-2 px-4 items-center font-medium text-gray-950 dark:text-gray-400"
           href="/dashboard"
         >
           {/* <ShinyButton className={`${styles.shiny_button}`}>

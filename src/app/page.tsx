@@ -124,7 +124,7 @@ export default async function Page() {
   const userId = userData?.id || "";
 
   return (
-    <main className={`${styles.main}`}>
+    <main className={`${styles.main} bg-white dark:bg-black`}>
       <div className={`${styles.main_content}`}>
         <div className={`${styles.main_content_nav}`}>
         </div>
